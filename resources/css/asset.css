@@ -1,1 +1,3 @@
-/* Nova Asset CSS */
+/* Nova Field CSS */
+@tailwind components;
+@tailwind utilities;
