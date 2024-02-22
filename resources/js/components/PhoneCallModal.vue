@@ -1,37 +1,29 @@
-<template>
-  
-    <Call />
+<template></template>
 
-</template>
+<script>
+import { ref, watchEffect } from "vue";
 
-<script setup>
-import { onMounted, onBeforeUnmount, ref } from "vue";
-import Call from "./Call.vue";
+export default {
+  watchEffect() {
+    console.log("???");
+  },
+  mounted() {
+    console.log("Phone call initiated");
 
-const observer = ref(null);
-const dark = ref(false);
-
-onMounted(() => {
-  dark.value = document.documentElement.classList.contains("dark");
-
-  observer.value = new MutationObserver((records) => {
-    records.forEach((record) => {
-      dark.value = record.target.classList.contains("dark");
+    Nova.$emit("phone-call-initiated", {
+      phone: this.data.phone,
+      firstname: this.data.firstname,
+      lastname: this.data.lastname,
+      id: this.data.id,
     });
-  });
 
-  observer.value.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["class"],
-    childList: false,
-    characterData: false,
-  });
-});
-
-onBeforeUnmount(() => {
-  observer.value.disconnect();
-  observer.value = null;
-});
+    this.$emit("close");
+  },
+  components: {},
+  props: {
+    data: { phone: String, firstname: String, lastname: String, id: Number },
+  },
+};
 </script>
 
 <style>

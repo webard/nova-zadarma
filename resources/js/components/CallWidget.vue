@@ -1,0 +1,88 @@
+<template>
+  <div
+    v-if="displayWidget === true"
+    class="bg-gray-200 dark:bg-gray-700 py-2 px-4 fixed rounded-lg shadow"
+    style="z-index: 10; right: 20px; bottom: 50px; width: 400px"
+  >
+    <div class="flex gap-2 items-center">
+      <div class="flex-none">
+        <span class="dark:text-gray-400"
+          ><span class="font-bold">{{ firstname }} {{ lastname }}</span>
+          <br />
+          {{ phone }}</span
+        >
+      </div>
+      <div class="flex-grow text-right">
+        <a
+          class="text-center"
+          v-if="phoneCallStarted === false"
+          @click="startPhoneCall"
+        >
+          <CallIcon />
+        </a>
+        <a
+          class="text-center"
+          v-if="phoneCallStarted === true"
+          @click="finishPhoneCall"
+        >
+          <DeclineIcon />
+        </a>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import CallIcon from "./icons/CallIcon.vue";
+import DeclineIcon from "./icons/DeclineIcon.vue";
+
+export default {
+  data() {
+    return {
+      phoneCallStarted: false,
+      displayWidget: false,
+      firstname: "",
+      lastname: "",
+      phone: "",
+    };
+  },
+  methods: {
+    startPhoneCall() {
+      //   window.zdrmWebrtcPhone.setCallingNumber(this.phone)
+      //   window.zdrmWebrtcPhone.callNum()
+
+      Nova.$emit("phone-call-started");
+      this.phoneCallStarted = true;
+    },
+
+    finishPhoneCall() {
+      window.zdrmWebrtcPhone.finishCall();
+      Nova.$emit("phone-call-ended");
+      this.phoneCallStarted = false;
+      this.displayWidget = false;
+    },
+  },
+  /**
+   * Mount the component.
+   */
+  mounted() {
+    // this.$refs.confirmButton.focus();
+
+    Nova.$on("action-executed", function (data, data2) {
+      console.log("LOOOOL2", data, data2);
+    });
+
+    Nova.$on("phone-call-initiated", (data) => {
+      console.log("[CallWidget] Phone call initiated");
+
+      this.displayWidget = true;
+
+      this.firstname = data.firstname;
+      this.lastname = data.lastname;
+      this.phone = data.phone;
+    });
+  },
+
+  components: { CallIcon, DeclineIcon },
+};
+</script>

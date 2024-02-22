@@ -1,6 +1,6 @@
 <template>
   <svg
-    style="width: 100px; height: 100px; color: red"
+    style="width: 50px; height: 50px; color: red"
     xmlns="http://www.w3.org/2000/svg"
     class="inline"
     fill="none"
