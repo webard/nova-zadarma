@@ -1,0 +1,31 @@
+{
+    "name": "sylapi/nova-phone-call-modal",
+    "description": "A Laravel Nova asset.",
+    "keywords": [
+        "laravel",
+        "nova"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^8.0",
+        "illuminate/support": "*",
+        "laravel/nova": "^4.32"
+      },
+    "autoload": {
+        "psr-4": {
+            "Sylapi\\NovaPhoneCallModal\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sylapi\\NovaPhoneCallModal\\AssetServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
