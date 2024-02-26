@@ -25,6 +25,7 @@ export default {
     });
 
     Nova.$on("phone-call-ended", () => {
+      alert('zadzialalo?');
       this.phoneCallStarted = false;
     });
   },

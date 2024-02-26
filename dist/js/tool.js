@@ -46,13 +46,7 @@ __webpack_require__.r(__webpack_exports__);
    */
   mounted: function mounted() {
     var _this = this;
-    // this.$refs.confirmButton.focus();
-
-    Nova.$on("action-executed", function (data, data2) {
-      console.log("LOOOOL2", data, data2);
-    });
     Nova.$on("phone-call-initiated", function (data) {
-      console.log("[CallWidget] Phone call initiated");
       _this.displayWidget = true;
       _this.firstname = data.firstname;
       _this.lastname = data.lastname;
@@ -89,6 +83,7 @@ __webpack_require__.r(__webpack_exports__);
       _this.phoneCallStarted = true;
     });
     Nova.$on("phone-call-ended", function () {
+      alert('zadzialalo?');
       _this.phoneCallStarted = false;
     });
   },

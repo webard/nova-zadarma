@@ -66,15 +66,7 @@ export default {
    * Mount the component.
    */
   mounted() {
-    // this.$refs.confirmButton.focus();
-
-    Nova.$on("action-executed", function (data, data2) {
-      console.log("LOOOOL2", data, data2);
-    });
-
     Nova.$on("phone-call-initiated", (data) => {
-      console.log("[CallWidget] Phone call initiated");
-
       this.displayWidget = true;
 
       this.firstname = data.firstname;

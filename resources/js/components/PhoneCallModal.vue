@@ -1,15 +1,15 @@
 <template></template>
 
 <script>
-import { ref, watchEffect } from "vue";
-
+/**
+ * This component just emit an event to start a phone call and close itself.
+ * Rest of logic is handled by other components.
+ * It is necessary because Nova does not have something like Action::emit() in PHP for emitting events to JavaScript.
+ */
 export default {
   watchEffect() {
-    console.log("???");
   },
   mounted() {
-    console.log("Phone call initiated");
-
     Nova.$emit("phone-call-initiated", {
       phone: this.data.phone,
       firstname: this.data.firstname,
@@ -25,7 +25,3 @@ export default {
   },
 };
 </script>
-
-<style>
-/* Scoped Styles */
-</style>
