@@ -116,7 +116,7 @@ var _hoisted_1 = {
   style: {
     "z-index": "10",
     "right": "20px",
-    "bottom": "50px",
+    "bottom": "100px",
     "width": "400px"
   }
 };

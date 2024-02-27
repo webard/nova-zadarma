@@ -78,7 +78,7 @@ class NovaZadarmaServiceProvider extends ServiceProvider
             ->prefix('nova-vendor/webard/nova-zadarma')
             ->group(__DIR__.'/../routes/api.php');
 
-        Route::middleware(['web'])
+        Route::middleware(['nova'])
             ->prefix('nova-vendor/webard/nova-zadarma')
             ->group(__DIR__.'/../routes/webhook.php');
     }

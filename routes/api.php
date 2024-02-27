@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Webard\NovaZadarma\Http\Controllers\ZadarmaWebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,4 +21,3 @@ use Webard\NovaZadarma\Http\Controllers\ZadarmaWebhookController;
 Route::get('/counters', function (Request $request) {
     return ['orders_count' => 666];
 });
-

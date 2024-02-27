@@ -16,7 +16,7 @@ Nova.booting((app) => {
                         true,
                         {
                             right: "25px",
-                            bottom: "50px",
+                            bottom: "100px",
                             getStatusMessage: function (status) {
                                 alert("status:" + status);
                             },

@@ -1,5 +1,9 @@
 # Laravel Nova Zadarma
 
+## TODO
+- tests
+- webhook validation
+
 ## Webhooks
 
 In Zadarma Integrations Notifications set PBX call webhook url to:

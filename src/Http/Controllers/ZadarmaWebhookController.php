@@ -177,6 +177,10 @@ class ZadarmaWebhookController extends Controller
 
         $validatedRequest = $validator->validated();
 
+        if (stripos($validatedRequest['caller_id'], '+') === false) {
+            $validatedRequest['caller_id'] = '+'.$validatedRequest['caller_id']; // add '+' to 'caller_id
+        }
+
         $className = config('nova-zadarma.webhooks.outgoing_call_start');
 
         $class = new $className();
@@ -215,7 +219,7 @@ class ZadarmaWebhookController extends Controller
 
         $validatedRequest = $validator->validated();
 
-        $className = config('nova-zadarma.webhooks.outgoing_call_start');
+        $className = config('nova-zadarma.webhooks.outgoing_call_end');
 
         $class = new $className();
         $response = $class($validatedRequest, $request);

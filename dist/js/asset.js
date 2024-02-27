@@ -73,7 +73,7 @@ Nova.booting(function (app) {
         setTimeout(function () {
           zadarmaWidgetFn(Nova.config("zadarma_key"), Nova.config("zadarma_login"), "rounded" /*square|rounded*/, "en" /*ru, en, es, fr, de, pl, ua*/, true, {
             right: "25px",
-            bottom: "50px",
+            bottom: "100px",
             getStatusMessage: function getStatusMessage(status) {
               alert("status:" + status);
             }
