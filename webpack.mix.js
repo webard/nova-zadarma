@@ -12,4 +12,4 @@ mix
   .alias({
     "@": path.join(__dirname, "resources/js/"),
   })
-  .nova("sylapi/nova-phone-call-modal");
+  .nova("webard/nova-zadarma");

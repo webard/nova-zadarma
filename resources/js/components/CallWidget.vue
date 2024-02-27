@@ -7,7 +7,7 @@
     <div class="flex gap-2 items-center">
       <div class="flex-none">
         <span class="dark:text-gray-400"
-          ><span class="font-bold">{{ firstname }} {{ lastname }}</span>
+          ><span class="font-bold">{{ title }}</span>
           <br />
           {{ phone }}</span
         >
@@ -41,15 +41,15 @@ export default {
     return {
       phoneCallStarted: false,
       displayWidget: false,
-      firstname: "",
-      lastname: "",
+      id: "",
+      title: "",
       phone: "",
     };
   },
   methods: {
     startPhoneCall() {
-      //   window.zdrmWebrtcPhone.setCallingNumber(this.phone)
-      //   window.zdrmWebrtcPhone.callNum()
+      window.zdrmWebrtcPhone.setCallingNumber(this.phone)
+      window.zdrmWebrtcPhone.callNum()
 
       Nova.$emit("phone-call-started");
       this.phoneCallStarted = true;
@@ -69,9 +69,11 @@ export default {
     Nova.$on("phone-call-initiated", (data) => {
       this.displayWidget = true;
 
-      this.firstname = data.firstname;
-      this.lastname = data.lastname;
+      this.id = data.id;
+      this.title = data.title;
       this.phone = data.phone;
+
+      this.startPhoneCall();
     });
   },
 

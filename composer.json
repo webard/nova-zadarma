@@ -1,5 +1,5 @@
 {
-  "name": "sylapi/nova-phone-call-modal",
+  "name": "webard/nova-zadarma",
   "description": "A Laravel Nova asset.",
   "keywords": [
     "laravel",
@@ -9,17 +9,18 @@
   "require": {
     "php": "^8.0",
     "illuminate/support": "*",
-    "laravel/nova": "^4.32"
+    "laravel/nova": "^4.32",
+    "zadarma/user-api-v1": "^1.1"
   },
   "autoload": {
     "psr-4": {
-      "Sylapi\\NovaPhoneCallModal\\": "src/"
+      "Webard\\NovaZadarma\\": "src/"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "Sylapi\\NovaPhoneCallModal\\AssetServiceProvider"
+        "Webard\\NovaZadarma\\NovaZadarmaServiceProvider"
       ]
     }
   },
@@ -33,5 +34,8 @@
     "sort-packages": true
   },
   "minimum-stability": "dev",
-  "prefer-stable": true
+  "prefer-stable": true,
+  "require-dev": {
+    "laravel/pint": "^1.14"
+  }
 }

@@ -9,5 +9,5 @@ module.exports = {
     extend: {},
   },
   plugins: [],
-  important: ".sylapi-nova-phone-call-modal",
+  important: ".webard-nova-zadarma",
 };

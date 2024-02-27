@@ -21,16 +21,15 @@ __webpack_require__.r(__webpack_exports__);
     return {
       phoneCallStarted: false,
       displayWidget: false,
-      firstname: "",
-      lastname: "",
+      id: "",
+      title: "",
       phone: ""
     };
   },
   methods: {
     startPhoneCall: function startPhoneCall() {
-      //   window.zdrmWebrtcPhone.setCallingNumber(this.phone)
-      //   window.zdrmWebrtcPhone.callNum()
-
+      window.zdrmWebrtcPhone.setCallingNumber(this.phone);
+      window.zdrmWebrtcPhone.callNum();
       Nova.$emit("phone-call-started");
       this.phoneCallStarted = true;
     },
@@ -48,9 +47,10 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
     Nova.$on("phone-call-initiated", function (data) {
       _this.displayWidget = true;
-      _this.firstname = data.firstname;
-      _this.lastname = data.lastname;
+      _this.id = data.id;
+      _this.title = data.title;
       _this.phone = data.phone;
+      _this.startPhoneCall();
     });
   },
   components: {
@@ -139,7 +139,7 @@ var _hoisted_7 = {
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_CallIcon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("CallIcon");
   var _component_DeclineIcon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("DeclineIcon");
-  return $data.displayWidget === true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.firstname) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.lastname), 1 /* TEXT */), _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.phone), 1 /* TEXT */)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [$data.phoneCallStarted === false ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
+  return $data.displayWidget === true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.title), 1 /* TEXT */), _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.phone), 1 /* TEXT */)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [$data.phoneCallStarted === false ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
     key: 0,
     "class": "text-center",
     onClick: _cache[0] || (_cache[0] = function () {

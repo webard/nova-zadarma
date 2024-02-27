@@ -1,5 +1,4 @@
 <template></template>
-
 <script>
 /**
  * This component just emit an event to start a phone call and close itself.
@@ -12,8 +11,7 @@ export default {
   mounted() {
     Nova.$emit("phone-call-initiated", {
       phone: this.data.phone,
-      firstname: this.data.firstname,
-      lastname: this.data.lastname,
+      title: this.data.title,
       id: this.data.id,
     });
 
@@ -21,7 +19,7 @@ export default {
   },
   components: {},
   props: {
-    data: { phone: String, firstname: String, lastname: String, id: Number },
+    data: { phone: String, title: String, id: String },
   },
 };
 </script>

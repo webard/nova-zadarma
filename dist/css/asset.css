@@ -1,175 +1,92 @@
 /* Nova Field CSS */
-.sylapi-nova-phone-call-modal :is(.fixed) {
-  position: fixed;
+.webard-nova-zadarma :is(.fixed) {
+    position: fixed
 }
-.sylapi-nova-phone-call-modal :is(.relative) {
-  position: relative;
+.webard-nova-zadarma :is(.relative) {
+    position: relative
 }
-.sylapi-nova-phone-call-modal :is(.mx-12) {
-  margin-left: 3rem;
-  margin-right: 3rem;
+.webard-nova-zadarma :is(.mr-3) {
+    margin-right: 0.75rem
 }
-.sylapi-nova-phone-call-modal :is(.ml-1) {
-  margin-left: 0.25rem;
+.webard-nova-zadarma :is(.inline) {
+    display: inline
 }
-.sylapi-nova-phone-call-modal :is(.ml-auto) {
-  margin-left: auto;
+.webard-nova-zadarma :is(.flex) {
+    display: flex
 }
-.sylapi-nova-phone-call-modal :is(.mr-1) {
-  margin-right: 0.25rem;
+.webard-nova-zadarma :is(.inline-flex) {
+    display: inline-flex
 }
-.sylapi-nova-phone-call-modal :is(.mr-3) {
-  margin-right: 0.75rem;
+.webard-nova-zadarma :is(.h-9) {
+    height: 2.25rem
 }
-.sylapi-nova-phone-call-modal :is(.mt-6) {
-  margin-top: 1.5rem;
+.webard-nova-zadarma :is(.min-w-9) {
+    min-width: 2.25rem
 }
-.sylapi-nova-phone-call-modal :is(.inline) {
-  display: inline;
+.webard-nova-zadarma :is(.flex-none) {
+    flex: none
 }
-.sylapi-nova-phone-call-modal :is(.flex) {
-  display: flex;
+.webard-nova-zadarma :is(.flex-grow) {
+    flex-grow: 1
 }
-.sylapi-nova-phone-call-modal :is(.inline-flex) {
-  display: inline-flex;
+.webard-nova-zadarma :is(.cursor-pointer) {
+    cursor: pointer
 }
-.sylapi-nova-phone-call-modal :is(.grid) {
-  display: grid;
+.webard-nova-zadarma :is(.items-center) {
+    align-items: center
 }
-.sylapi-nova-phone-call-modal :is(.hidden) {
-  display: none;
+.webard-nova-zadarma :is(.justify-center) {
+    justify-content: center
 }
-.sylapi-nova-phone-call-modal :is(.h-9) {
-  height: 2.25rem;
+.webard-nova-zadarma :is(.gap-2) {
+    gap: 0.5rem
 }
-.sylapi-nova-phone-call-modal :is(.min-w-9) {
-  min-width: 2.25rem;
+.webard-nova-zadarma :is(.rounded-lg) {
+    border-radius: 0.5rem
 }
-.sylapi-nova-phone-call-modal :is(.flex-none) {
-  flex: none;
+.webard-nova-zadarma :is(.rounded) {
+    border-radius: 0.25rem
 }
-.sylapi-nova-phone-call-modal :is(.flex-grow) {
-  flex-grow: 1;
+.webard-nova-zadarma :is(.bg-gray-200) {
+    --tw-bg-opacity: 1;
+    background-color: rgb(229 231 235 / var(--tw-bg-opacity))
 }
-.sylapi-nova-phone-call-modal :is(.grow) {
-  flex-grow: 1;
+.webard-nova-zadarma :is(.px-4) {
+    padding-left: 1rem;
+    padding-right: 1rem
 }
-.sylapi-nova-phone-call-modal :is(.cursor-pointer) {
-  cursor: pointer;
+.webard-nova-zadarma :is(.py-2) {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem
 }
-.sylapi-nova-phone-call-modal :is(.grid-cols-2) {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+.webard-nova-zadarma :is(.text-center) {
+    text-align: center
 }
-.sylapi-nova-phone-call-modal :is(.flex-col) {
-  flex-direction: column;
+.webard-nova-zadarma :is(.text-right) {
+    text-align: right
 }
-.sylapi-nova-phone-call-modal :is(.items-center) {
-  align-items: center;
+.webard-nova-zadarma :is(.font-bold) {
+    font-weight: 700
 }
-.sylapi-nova-phone-call-modal :is(.justify-center) {
-  justify-content: center;
+.webard-nova-zadarma :is(.text-red-500) {
+    --tw-text-opacity: 1;
+    color: rgb(239 68 68 / var(--tw-text-opacity))
 }
-.sylapi-nova-phone-call-modal :is(.gap-2) {
-  gap: 0.5rem;
+.webard-nova-zadarma :is(.shadow) {
+    --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
 }
-.sylapi-nova-phone-call-modal :is(.gap-4) {
-  gap: 1rem;
+.webard-nova-zadarma :is(.dark .dark\:bg-gray-700) {
+    --tw-bg-opacity: 1;
+    background-color: rgb(55 65 81 / var(--tw-bg-opacity))
 }
-.sylapi-nova-phone-call-modal :is(.rounded-lg) {
-  border-radius: 0.5rem;
+.webard-nova-zadarma :is(.dark .dark\:text-gray-400) {
+    --tw-text-opacity: 1;
+    color: rgb(156 163 175 / var(--tw-text-opacity))
 }
-.sylapi-nova-phone-call-modal :is(.bg-gray-100) {
-  --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+.webard-nova-zadarma :is(.dark .dark\:text-red-400) {
+    --tw-text-opacity: 1;
+    color: rgb(248 113 113 / var(--tw-text-opacity))
 }
-.sylapi-nova-phone-call-modal :is(.bg-gray-200) {
-  --tw-bg-opacity: 1;
-  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
-}
-.sylapi-nova-phone-call-modal :is(.px-3) {
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-}
-.sylapi-nova-phone-call-modal :is(.px-6) {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-}
-.sylapi-nova-phone-call-modal :is(.py-3) {
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-}
-.sylapi-nova-phone-call-modal :is(.py-8) {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
-.sylapi-nova-phone-call-modal :is(.px-4) {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-.sylapi-nova-phone-call-modal :is(.py-2) {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
-.sylapi-nova-phone-call-modal :is(.text-center) {
-  text-align: center;
-}
-.sylapi-nova-phone-call-modal :is(.text-right) {
-  text-align: right;
-}
-.sylapi-nova-phone-call-modal :is(.text-2xl) {
-  font-size: 1.5rem;
-  line-height: 2rem;
-}
-.sylapi-nova-phone-call-modal :is(.text-base) {
-  font-size: 1rem;
-  line-height: 1.5rem;
-}
-.sylapi-nova-phone-call-modal :is(.font-bold) {
-  font-weight: 700;
-}
-.sylapi-nova-phone-call-modal :is(.font-normal) {
-  font-weight: 400;
-}
-.sylapi-nova-phone-call-modal :is(.font-semibold) {
-  font-weight: 600;
-}
-.sylapi-nova-phone-call-modal :is(.text-gray-200) {
-  --tw-text-opacity: 1;
-  color: rgb(229 231 235 / var(--tw-text-opacity));
-}
-.sylapi-nova-phone-call-modal :is(.text-gray-500) {
-  --tw-text-opacity: 1;
-  color: rgb(107 114 128 / var(--tw-text-opacity));
-}
-.sylapi-nova-phone-call-modal :is(.text-red-500) {
-  --tw-text-opacity: 1;
-  color: rgb(239 68 68 / var(--tw-text-opacity));
-}
-.sylapi-nova-phone-call-modal :is(.text-gray-400) {
-  --tw-text-opacity: 1;
-  color: rgb(156 163 175 / var(--tw-text-opacity));
-}
-.sylapi-nova-phone-call-modal :is(.shadow) {
-  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color),
-    0 1px 2px -1px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-.sylapi-nova-phone-call-modal :is(.dark .dark\:bg-gray-700) {
-  --tw-bg-opacity: 1;
-  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
-}
-.sylapi-nova-phone-call-modal :is(.dark .dark\:text-gray-400) {
-  --tw-text-opacity: 1;
-  color: rgb(156 163 175 / var(--tw-text-opacity));
-}
-.sylapi-nova-phone-call-modal :is(.dark .dark\:text-red-400) {
-  --tw-text-opacity: 1;
-  color: rgb(248 113 113 / var(--tw-text-opacity));
-}
-@media (min-width: 768px) {
-  .sylapi-nova-phone-call-modal :is(.md\:inline) {
-    display: inline;
-  }
-}
+
