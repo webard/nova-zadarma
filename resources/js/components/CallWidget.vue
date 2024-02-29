@@ -2,7 +2,7 @@
   <div
     v-if="displayWidget === true"
     class="bg-gray-200 dark:bg-gray-700 py-2 px-4 fixed rounded-lg shadow"
-    style="z-index: 10; right: 20px; bottom: 100px; width: 400px"
+    style="z-index: 10; right: 20px; bottom: 90px; width: 400px"
   >
     <div class="flex gap-2 items-center">
       <div class="flex-none">
