@@ -31,6 +31,7 @@ class NovaZadarmaServiceProvider extends ServiceProvider
         Nova::serving(function (ServingNova $event) {
 
             Nova::script('nova-zadarma', __DIR__.'/../dist/js/asset.js');
+
             Nova::style('nova-zadarma', __DIR__.'/../dist/css/asset.css');
 
             $zdarmaService = app(ZadarmaService::class);

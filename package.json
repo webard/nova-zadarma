@@ -20,6 +20,7 @@
     "vue-loader": "^16.8.3"
   },
   "dependencies": {
-    "laravel-nova-ui": "^0.4.12"
+    "laravel-nova-ui": "^0.4.12",
+    "vue-star-rating": "^2.1.0"
   }
 }

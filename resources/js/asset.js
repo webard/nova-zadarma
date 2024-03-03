@@ -6,7 +6,8 @@ Nova.booting((app) => {
     loadScript(
       "https://my.zadarma.com/webphoneWebRTCWidget/v8/js/loader-phone-lib.js?v=68",
     ).then(() => {
-      loadScript("/zadarma-loader-phone-fn.js?v=68").then(() => {
+
+      loadScript("/nova-vendor/webard/nova-zadarma/zadarma-loader-phone-fn.js?v=68").then(() => {
         setTimeout(() => {
           zadarmaWidgetFn(
             Nova.config("zadarma_key"),

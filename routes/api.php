@@ -21,3 +21,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/counters', function (Request $request) {
     return ['orders_count' => 666];
 });
+
+Route::get('/zadarma-loader-phone-fn.js', function (Request $request) {
+    return response(file_get_contents(__DIR__ . '/../resources/js/zadarma-loader-phone-fn.js'), 200, [
+        'Content-Type' => 'application/javascript',
+    ]);
+});
+

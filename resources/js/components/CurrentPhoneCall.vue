@@ -10,9 +10,7 @@
     />
   </div>
   <FeedbackModal
-    :show="true"
-    token-name="sfsdf"
-    @cancel="showDeleteModal = false"
+    :show="showFeedbackModal"
     @confirmed=""
   />
 </template>
@@ -23,6 +21,7 @@ export default {
   data() {
     return {
       phoneCallStarted: false,
+      showFeedbackModal: false,
     };
   },
 
@@ -32,7 +31,7 @@ export default {
     });
 
     Nova.$on("phone-call-ended", () => {
-      alert("zadzialalo?");
+      this.showFeedbackModal = true;
       this.phoneCallStarted = false;
     });
   },

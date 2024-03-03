@@ -43,7 +43,6 @@ export default {
       id: "",
       title: "",
       phone: "",
-      showDeleteModal: true,
     };
   },
   methods: {
@@ -74,6 +73,10 @@ export default {
       this.phone = data.phone;
 
       this.startPhoneCall();
+    });
+
+    Nova.$on("phone-call-ended", (data) => {
+      this.displayWidget = false;
     });
   },
 
