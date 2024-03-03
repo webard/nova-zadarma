@@ -35,7 +35,6 @@
 <script>
 import CallIcon from "./icons/CallIcon.vue";
 import DeclineIcon from "./icons/DeclineIcon.vue";
-
 export default {
   data() {
     return {
@@ -44,12 +43,13 @@ export default {
       id: "",
       title: "",
       phone: "",
+      showDeleteModal: true,
     };
   },
   methods: {
     startPhoneCall() {
-      window.zdrmWebrtcPhone.setCallingNumber(this.phone)
-      window.zdrmWebrtcPhone.callNum()
+      window.zdrmWebrtcPhone.setCallingNumber(this.phone);
+      window.zdrmWebrtcPhone.callNum();
 
       Nova.$emit("phone-call-started");
       this.phoneCallStarted = true;

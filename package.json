@@ -19,5 +19,7 @@
     "tailwindcss": "^3.4.1",
     "vue-loader": "^16.8.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "laravel-nova-ui": "^0.4.12"
+  }
 }

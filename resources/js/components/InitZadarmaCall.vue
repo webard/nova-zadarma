@@ -6,8 +6,7 @@
  * It is necessary because Nova does not have something like Action::emit() in PHP for emitting events to JavaScript.
  */
 export default {
-  watchEffect() {
-  },
+  watchEffect() {},
   mounted() {
     Nova.$emit("phone-call-initiated", {
       phone: this.data.phone,
