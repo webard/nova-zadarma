@@ -3,6 +3,8 @@ import loadScript from "./scriptLoader";
 
 
 Nova.booting((app) => {
+  const canCall = Nova.config('zadarma_can_call');
+  console.log('canCall??', canCall);
   const loadZadarma = () => {
     loadScript(
       "https://my.zadarma.com/webphoneWebRTCWidget/v8/js/loader-phone-lib.js?v=68",
