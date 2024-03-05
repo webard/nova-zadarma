@@ -29,7 +29,7 @@ class ZadarmaService
             try {
                 return $this->api->getWebrtcKey($sip)->key;
             } catch (\Exception $e) {
-                Log::error('Zadarma Webrtc Key Error for SIP '.$sip.':', $e->getMessage());
+                Log::error('Zadarma Webrtc Key Error for SIP '.$sip.': ' . $e->getMessage());
                 return null;
             }
             
