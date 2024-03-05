@@ -24,7 +24,7 @@ class ZadarmaService
     public function getWebrtcKey(string $sip): ?string
     {
         // Must be cached due to Zadarma API limits
-        return Cache::remember('nova-zadarma-key-'.$sip, 600, function () use ($sip) {
+        return Cache::remember('nova-zadarma-key2-'.$sip, 60, function () use ($sip) {
             return $this->api->getWebrtcKey($sip)->key;
         });
     }
