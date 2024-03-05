@@ -54,8 +54,8 @@ class NovaZadarmaServiceProvider extends ServiceProvider
                 'user' => $userSip,
                 'sipField' => $sipField,
                 'canCall' => $canCall,
-                'key' => $key,
-                'login' => $login
+                'key' => $key ?? 'null',
+                'login' => $login ?? 'null'
             ]);
 
             Nova::provideToScript([
