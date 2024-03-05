@@ -67,8 +67,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 Nova.booting(function (app) {
-  var canCall = Nova.config('zadarma_can_call');
-  console.log('canCall??', canCall);
   var loadZadarma = function loadZadarma() {
     (0,_scriptLoader__WEBPACK_IMPORTED_MODULE_1__["default"])("https://my.zadarma.com/webphoneWebRTCWidget/v8/js/loader-phone-lib.js?v=68").then(function () {
       (0,_scriptLoader__WEBPACK_IMPORTED_MODULE_1__["default"])("/nova-vendor/webard/nova-zadarma/zadarma-loader-phone-fn.js?v=68").then(function () {
@@ -87,7 +85,10 @@ Nova.booting(function (app) {
     });
   };
   app.component("InitZadarmaCall", _components_InitZadarmaCall__WEBPACK_IMPORTED_MODULE_0__["default"]);
-  loadZadarma();
+  var canCall = Nova.config('zadarma_can_call');
+  if (canCall == true || canCall == 'true') {
+    loadZadarma();
+  }
 });
 
 /***/ }),
