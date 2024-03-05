@@ -52,8 +52,8 @@ class NovaZadarmaServiceProvider extends ServiceProvider
 
             Nova::provideToScript([
                 'zadarma_can_call' => $canCall ?? false,
-                'zadarma_key' => $key ?? 'brak',
-                'zadarma_login' => $login ?? 'brak',
+                'zadarma_key' => $key ?? null,
+                'zadarma_login' => $login ?? null,
             ]);
         });
 
