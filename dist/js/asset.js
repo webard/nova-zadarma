@@ -87,6 +87,9 @@ Nova.booting(function (app) {
   app.component("InitZadarmaCall", _components_InitZadarmaCall__WEBPACK_IMPORTED_MODULE_0__["default"]);
   var canCall = Nova.config('zadarma_can_call');
   if (canCall == true || canCall == 'true') {
+    if (Nova.config("zadarma_key") == null || Nova.config("zadarma_login") == null) {
+      console.error("Zadarma key or login is not set, probably SIP is not configured or API keys are not set. Please check your configuration.");
+    }
     loadZadarma();
   }
 });
