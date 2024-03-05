@@ -50,14 +50,6 @@ class NovaZadarmaServiceProvider extends ServiceProvider
                 $login = $zdarmaService->getWebrtcLogin($userSip);
             }
 
-            Log::warning('NOVA ZADARMA', [
-                'user' => $userSip,
-                'sipField' => $sipField,
-                'canCall' => $canCall,
-                'key' => $key ?? 'null',
-                'login' => $login ?? 'null'
-            ]);
-
             Nova::provideToScript([
                 'zadarma_can_call' => $canCall ?? false,
                 'zadarma_key' => $key ?? 'brak',

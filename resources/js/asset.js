@@ -3,9 +3,6 @@ import loadScript from "./scriptLoader";
 
 
 Nova.booting((app) => {
-  console.log(['Nova zadarma key',  Nova.config("zadarma_key")]);
-  console.log(['Nova zadarma login',  Nova.config("zadarma_login")]);
-
   const loadZadarma = () => {
     loadScript(
       "https://my.zadarma.com/webphoneWebRTCWidget/v8/js/loader-phone-lib.js?v=68",
