@@ -31,7 +31,7 @@ export default {
     });
 
     Nova.$on("phone-call-ended", () => {
-      this.showFeedbackModal = true;
+      //this.showFeedbackModal = true;
       this.phoneCallStarted = false;
     });
   },
