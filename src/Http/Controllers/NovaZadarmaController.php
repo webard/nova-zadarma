@@ -12,7 +12,7 @@ class NovaZadarmaController extends Controller
 {
     public function getPhoneNumberInfo(Request $request)
     {
-        $className = config('nova-zadarma.phone_number_info');
+        $className = config('nova-zadarma.phone_number_info_handler');
 
         $phoneNumber = $request->input('phoneNumber');
 
