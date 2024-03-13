@@ -12,13 +12,14 @@ export default {
       phone: this.data.phone,
       title: this.data.title,
       id: this.data.id,
+      resource_url: this.data.resource_url,
     });
 
     this.$emit("close");
   },
   components: {},
   props: {
-    data: { phone: String, title: String, id: String },
+    data: { phone: String, title: String, id: String, resource_url: String },
   },
 };
 </script>

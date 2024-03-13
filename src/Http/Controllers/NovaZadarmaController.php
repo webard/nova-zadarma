@@ -2,52 +2,36 @@
 
 namespace Webard\NovaZadarma\Http\Controllers;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Validation\ValidationException;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Webard\NovaZadarma\Contract\PhoneNumberInfoContract;
 
 class NovaZadarmaController extends Controller
 {
-    private $config;
+    public function getPhoneNumberInfo(Request $request) {
+        $className = config('nova-zadarma.phone_number_info');
 
-    public function index(NovaRequest $request, string $resourceUriKey, $resourceId)
-    {
-        $config = config('nova-profile.'.$resourceUriKey);
+        $phoneNumber = $request->input('phoneNumber');
 
-        if ($config === null) {
-            throw new \Exception('Profile page is not configured for ['.$resourceUriKey.'] resource');
-        }
+        try {
+            $phoneNumberInfo = new $className($phoneNumber);
 
-        $this->config = $config;
-
-        $timeline = $this->prepareTimeline($request);
-
-        //dump(['timeline', $timeline]);
-
-        return inertia('NovaProfile', [
-            'counters' => $this->prepareCounters($request),
-            'information' => $this->prepareInformation($request),
-            'timeline' => $timeline,
+            assert($phoneNumberInfo instanceof PhoneNumberInfoContract);
+        return response()->json([
+            'title' => $phoneNumberInfo->getTitle(),
+            'resource_url' => $phoneNumberInfo->getResourceUrl(),
         ]);
-    }
-
-    private function prepareCounters(NovaRequest $request): array
-    {
-        return collect($this->config['counters'])->map(
-            fn ($counter) => (new $counter($request))->toArray()
-        )->toArray();
-    }
-
-    public function prepareInformation(NovaRequest $request): array
-    {
-        $class = $this->config['information'];
-
-        return (new $class($request))->toArray();
-    }
-
-    public function prepareTimeline(NovaRequest $request): array
-    {
-        $class = $this->config['timeline'];
-
-        return (new $class($request))->toArray();
+        } catch (ModelNotFoundException) {
+            return response()->json([
+                'error' => 'not_found'
+            ]);
+        } catch (ValidationException) {
+            return response()->json([
+                'error' => 'not_valid_phone_number'
+            ]);
+        }
     }
 }

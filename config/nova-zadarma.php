@@ -11,6 +11,8 @@ return [
 
     'webhook_controller' => \Webard\NovaZadarma\Http\Controllers\ZadarmaWebhookController::class,
 
+    'caller_info' => '',
+
     'webhooks' => [
         'incoming_call_start' => '',
         'incoming_call_end' => '',

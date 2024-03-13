@@ -1,5 +1,5 @@
-import CurrentPhoneCall from "./components/CurrentPhoneCall";
-import CallWidget from "./components/CallWidget";
+import PhoneCallHeaderIcon from "./components/PhoneCallHeaderIcon";
+import PhoneCallWidget from "./components/PhoneCallWidget";
 import { createApp, defineComponent } from "vue";
 
 Nova.booting((app) => {
@@ -8,7 +8,7 @@ Nova.booting((app) => {
 
     if (appHeader.length > 0) {
       let component = defineComponent({
-        extends: CurrentPhoneCall,
+        extends: PhoneCallHeaderIcon,
         data() {
           return { test: true };
         },
@@ -37,7 +37,7 @@ Nova.booting((app) => {
 
     if (content !== null) {
       let component = defineComponent({
-        extends: CallWidget,
+        extends: PhoneCallWidget,
         data() {
           return { test: true };
         },

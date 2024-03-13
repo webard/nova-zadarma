@@ -30,7 +30,7 @@ export default {
       this.phoneCallStarted = true;
     });
 
-    Nova.$on("phone-call-ended", () => {
+    Nova.$on("end-phone-call", () => {
       //this.showFeedbackModal = true;
       this.phoneCallStarted = false;
     });

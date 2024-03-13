@@ -15,8 +15,6 @@ var zadarmaWidgetFn = function (hash, sip, shape /*square|circle*/, lang /*ru, e
         position: position,
         form: shape,
         getSipsCallback: function (sips, errorCode, errorText) {
-
-            console.log(['CUSTOM callback'])
             var re;
             if(sips.disabled && sips.disabled === true){
                 document.getElementsByClassName('zdrm-phone')[0].className = document.getElementsByClassName('zdrm-phone')[0].className + ' zdrm-webphone-hide';
@@ -75,7 +73,7 @@ var zadarmaWidgetFn = function (hash, sip, shape /*square|circle*/, lang /*ru, e
                 document.getElementsByClassName('zdrm-webphone-callername')[0].innerHTML = '';
                 document.getElementById('zdrm-webphone-phonenumber-input').classList.remove('incoming');
 
-                Nova.$emit('phone-call-ended', {
+                Nova.$emit('end-phone-call', {
                     status: msg,
                     parameters: parameters
                 });
@@ -92,6 +90,13 @@ var zadarmaWidgetFn = function (hash, sip, shape /*square|circle*/, lang /*ru, e
                 zdrmWPhI.ringing();
                 zdrmWPhI.showCancelBtn();
                 document.getElementById('zdrm-webphone-phonenumber-input').classList.add('incoming');
+
+                Nova.$emit('zadarma-incoming-phone-call', {
+                    msg: msg,
+                    caller: parameters.caller,
+                    callerName: parameters.callerName ?? null,
+                    callerDid: parameters.callerDid ?? null
+                });
 
             } else if (msg == 'outgoing') {
                 zdrmWPhI.setCallingNumber(parameters.dst);
