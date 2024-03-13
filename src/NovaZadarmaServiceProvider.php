@@ -2,15 +2,14 @@
 
 namespace Webard\NovaZadarma;
 
-use Laravel\Nova\Nova;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Gate;
-use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Http\Middleware\Authenticate;
-use Webard\NovaZadarma\Services\ZadarmaService;
+use Laravel\Nova\Nova;
 use Webard\NovaZadarma\Http\Middleware\Authorize;
+use Webard\NovaZadarma\Services\ZadarmaService;
 
 class NovaZadarmaServiceProvider extends ServiceProvider
 {
@@ -35,19 +34,17 @@ class NovaZadarmaServiceProvider extends ServiceProvider
 
             Nova::style('nova-zadarma', __DIR__.'/../dist/css/asset.css');
 
-            $zdarmaService = app(ZadarmaService::class);
+            $zadarmaService = app(ZadarmaService::class);
 
             $sipField = config('nova-zadarma.sip_field');
 
             $userSip = auth()->user()->{$sipField} ?? null;
 
-           
-
             $canCall = Gate::allows('zadarmaCall', auth()->user());
 
             if ($canCall === true && ! empty($userSip)) {
-                $key = $zdarmaService->getWebrtcKey($userSip);
-                $login = $zdarmaService->getWebrtcLogin($userSip);
+                $key = $zadarmaService->getWebrtcKey($userSip);
+                $login = $zadarmaService->getWebrtcLogin($userSip);
             }
 
             Nova::provideToScript([

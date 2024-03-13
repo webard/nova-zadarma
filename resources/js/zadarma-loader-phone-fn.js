@@ -114,8 +114,7 @@ var zadarmaWidgetFn = function (hash, sip, shape /*square|circle*/, lang /*ru, e
             }
         },
         callbackEndCall: function (response) {
-            console.log('phone-call-ended',response);
-            Nova.$emit('phone-call-ended', response);
+            Nova.$emit('end-phone-call', response);
             zdrmWPhI.finishCall();
 
         },

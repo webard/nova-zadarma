@@ -38,10 +38,7 @@ class ZadarmaWebhookController extends Controller
             return $next($request);
         });
 
-        $this->log = Log::build([
-            'driver' => 'daily',
-            'path' => storage_path('logs/zadarma-webhook.log'),
-        ]);
+        $this->log = Log::channel(config('nova-zadarma.webhook_log_channel'));
     }
 
     /*
@@ -59,16 +56,29 @@ class ZadarmaWebhookController extends Controller
     */
     public function pbxCallWebhook(Request $request): Response
     {
+        // for some reason, caller_id or called_did sometimes does not have "+" at the beginning
+        // trying to fix this to make it work with validator
+        $calledDid = $request->input('called_did');
+        if ($calledDid !== null && str_contains($calledDid, '+') === false) {
+            $request->merge(['called_did' => '+'.$calledDid]);
+        }
 
-        //Log::debug('pbxCallWebhook input', $request->all());
+        $callerId = $request->input('caller_id');
+        if ($callerId !== null && str_contains($callerId, '+') === false) {
+            $request->merge(['caller_id' => '+'.$callerId]);
+        }
+
+        $this->log->debug('[pbx] webhook came with event '.$request->input('event'), $request->all());
 
         return match ((string) $request->input('event')) {
-            'NOTIFY_RECORD' => $this->handleRecord($request, $request->input('pbx_call_id')),
+            'NOTIFY_RECORD' => $this->handleRecord($request),
             'NOTIFY_OUT_START' => $this->handleOutgoingStart($request),
             'NOTIFY_OUT_END' => $this->handleOutgoingEnd($request),
             'NOTIFY_START' => $this->handleIncomingStart($request),
             'NOTIFY_END' => $this->handleIncomingEnd($request),
 
+            // NOTIFY_INTERNAL is called multiple times during one phone call
+            // Contains SIP numbers that are notified about incoming call
             'NOTIFY_INTERNAL' => response('unsupported'),
             'NOTIFY_ANSWER' => response('unsupported'),
             'NOTIFY_IVR' => response('unsupported'),
@@ -84,31 +94,43 @@ class ZadarmaWebhookController extends Controller
                 'pbx_call_id' => 'required|string',
                 'call_start' => 'required|date',
                 'caller_id' => 'phone',
-
-                // TODO: for some reason, caller id does not have "+" at the beginning, observe values if we can add it and validate as phone number
-                'called_did' => 'string',
+                'called_did' => 'phone',
             ],
         );
 
         if ($validator->fails()) {
-            $this->log->debug('NOTIFY_START validation failed', [
+            $this->log->error('[handleIncomingStart] validation failed', [
                 'errors' => $validator->errors(),
                 'input' => $request->all(),
             ]);
 
-            return response('error');
+            return response('validation');
         }
 
-        $validatedRequest = $validator->validated();
-
-        Log::debug('NOTIFY_START validated', $validatedRequest);
+        $validData = $validator->validated();
 
         $className = config('nova-zadarma.webhooks.incoming_call_start');
 
-        $class = new $className();
-        $response = $class($validatedRequest, $request);
+        $this->log->debug('[handleIncomingStart] validated successfully, handling event', [
+            [
+                'valid_data' => $validData,
+                'handler' => $className,
+            ],
+        ]);
 
-        return response($response === true ? 'ok' : 'error');
+        try {
+            $class = new $className($this->log);
+            $response = $class($validData, $request);
+
+            return response($response === true ? 'ok' : 'error');
+        } catch (\Throwable $e) {
+            $this->log->error('[handleIncomingStart] Error while handling', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return response('exception');
+        }
     }
 
     private function handleIncomingEnd(Request $request): Response
@@ -120,8 +142,7 @@ class ZadarmaWebhookController extends Controller
 
                 'caller_id' => 'phone',
 
-                // TODO: for some reason, caller id does not have "+" at the beginning, observe values if we can add it and validate as phone number
-                'called_did' => 'string',
+                'called_did' => 'phone',
 
                 'duration' => 'integer',
                 'is_recorded' => 'boolean',
@@ -134,22 +155,38 @@ class ZadarmaWebhookController extends Controller
         );
 
         if ($validator->fails()) {
-            $this->log->debug('NOTIFY_OUT_END validation failed', [
+            $this->log->error('[handleIncomingEnd] validation failed', [
                 'errors' => $validator->errors(),
                 'input' => $request->all(),
             ]);
 
-            return response('error');
+            return response('validation');
         }
 
-        $validatedRequest = $validator->validated();
+        $validData = $validator->validated();
 
         $className = config('nova-zadarma.webhooks.incoming_call_end');
 
-        $class = new $className();
-        $response = $class($validatedRequest, $request);
+        $this->log->debug('[handleIncomingEnd] validated successfully, handling event', [
+            [
+                'valid_data' => $validData,
+                'handler' => $className,
+            ],
+        ]);
 
-        return response($response === true ? 'ok' : 'error');
+        try {
+            $class = new $className($this->log);
+            $response = $class($validData, $request);
+
+            return response($response === true ? 'ok' : 'error');
+        } catch (\Throwable $e) {
+            $this->log->error('[handleIncomingEnd] Error while handling', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return response('exception');
+        }
     }
 
     private function handleOutgoingStart(Request $request): Response
@@ -161,32 +198,43 @@ class ZadarmaWebhookController extends Controller
                 'call_start' => 'required|date',
                 'internal' => 'string',
                 'destination' => 'phone',
-                // TODO: for some reason, caller id does not have "+" at the beginning, observe values if we can add it and validate as phone number
-                'caller_id' => 'string',
+                'caller_id' => 'phone',
             ],
         );
 
         if ($validator->fails()) {
-            $this->log->debug('NOTIFY_OUT_START validation failed', [
+            $this->log->error('[handleOutgoingStart] validation failed', [
                 'errors' => $validator->errors(),
                 'input' => $request->all(),
             ]);
 
-            return response('error');
+            return response('validation');
         }
 
-        $validatedRequest = $validator->validated();
-
-        if (stripos($validatedRequest['caller_id'], '+') === false) {
-            $validatedRequest['caller_id'] = '+'.$validatedRequest['caller_id']; // add '+' to 'caller_id
-        }
+        $validData = $validator->validated();
 
         $className = config('nova-zadarma.webhooks.outgoing_call_start');
 
-        $class = new $className();
-        $response = $class($validatedRequest, $request);
+        $this->log->debug('[handleOutgoingStart] validated successfully, handling event', [
+            [
+                'valid_data' => $validData,
+                'handler' => $className,
+            ],
+        ]);
 
-        return response($response === true ? 'ok' : 'error');
+        try {
+            $class = new $className($this->log);
+            $response = $class($validData, $request);
+
+            return response($response === true ? 'ok' : 'error');
+        } catch (\Throwable $e) {
+            $this->log->error('[handleOutgoingStart] Error while handling', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return response('exception');
+        }
     }
 
     private function handleOutgoingEnd(Request $request): Response
@@ -195,8 +243,8 @@ class ZadarmaWebhookController extends Controller
             $request->all(),
             [
                 'pbx_call_id' => 'required|string',
-                // TODO: for some reason, caller id does not have "+" at the beginning, observe values if we can add it and validate as phone number
-                'caller_id' => 'string',
+
+                'caller_id' => 'phone',
 
                 'duration' => 'integer',
                 'is_recorded' => 'boolean',
@@ -209,33 +257,84 @@ class ZadarmaWebhookController extends Controller
         );
 
         if ($validator->fails()) {
-            $this->log->debug('NOTIFY_OUT_END validation failed', [
+            $this->log->error('[handleOutgoingEnd] validation failed', [
                 'errors' => $validator->errors(),
                 'input' => $request->all(),
             ]);
 
-            return response('error');
+            return response('validation');
         }
 
-        $validatedRequest = $validator->validated();
+        $validData = $validator->validated();
 
         $className = config('nova-zadarma.webhooks.outgoing_call_end');
 
-        $class = new $className();
-        $response = $class($validatedRequest, $request);
+        $this->log->debug('[handleOutgoingEnd] validated successfully, handling event', [
+            [
+                'valid_data' => $validData,
+                'handler' => $className,
+            ],
+        ]);
 
-        return response($response === true ? 'ok' : 'error');
+        try {
+            $class = new $className($this->log);
+            $response = $class($validData, $request);
+
+            return response($response === true ? 'ok' : 'error');
+        } catch (\Throwable $e) {
+            $this->log->error('[handleOutgoingEnd] Error while handling', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return response('exception');
+        }
     }
 
-    private function handleRecord(Request $request, string $externalCallId): Response
+    private function handleRecord(Request $request): Response
     {
-        $zadarmaUrl = $this->zadarmaService->getRecordingUrl($externalCallId);
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'pbx_call_id' => 'required|string',
+            ]
+        );
+
+        if ($validator->fails()) {
+            $this->log->error('[handleRecord] validation failed', [
+                'errors' => $validator->errors(),
+                'input' => $request->all(),
+            ]);
+
+            return response('validation');
+        }
+
+        $validData = $validator->validated();
 
         $className = config('nova-zadarma.webhooks.phone_call_record');
 
-        $class = new $className();
-        $response = $class($zadarmaUrl, $externalCallId, $request);
+        $this->log->debug('[handleRecord] validated successfully, handling event', [
+            [
+                'valid_data' => $validData,
+                'handler' => $className,
+            ],
+        ]);
 
-        return response($response === true ? 'ok' : 'error');
+        $zadarmaUrl = $this->zadarmaService->getRecordingUrl($validData['pbx_call_id']);
+
+        try {
+            $class = new $className($this->log);
+            $response = $class($zadarmaUrl, $validData['pbx_call_id'], $request);
+
+            return response($response === true ? 'ok' : 'error');
+        } catch (\Throwable $e) {
+            $this->log->error('[handleOutgoingEnd] Error while handling', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return response('exception');
+        }
     }
 }

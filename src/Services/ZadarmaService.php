@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Webard\NovaZadarma\Services;
 
-use Zadarma_API\Api;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Zadarma_API\Api;
 
 class ZadarmaService
 {
@@ -29,10 +29,11 @@ class ZadarmaService
             try {
                 return $this->api->getWebrtcKey($sip)->key;
             } catch (\Exception $e) {
-                Log::error('Zadarma Webrtc Key Error for SIP '.$sip.': ' . $e->getMessage());
+                Log::error('Zadarma Webrtc Key Error for SIP '.$sip.': '.$e->getMessage());
+
                 return null;
             }
-            
+
         });
     }
 

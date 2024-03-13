@@ -13,6 +13,8 @@ return [
 
     'caller_info' => '',
 
+    'webhook_log_channel' => 'null',
+
     'webhooks' => [
         'incoming_call_start' => '',
         'incoming_call_end' => '',
