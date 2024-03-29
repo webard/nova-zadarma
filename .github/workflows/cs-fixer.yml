@@ -23,6 +23,7 @@ jobs:
             uses: "shivammathur/setup-php@v2"
             with:
                 php-version: "8.2"
+                coverage: "none"
         -
             name: "Checkout repository"
             uses: "actions/checkout@v4"
@@ -39,7 +40,7 @@ jobs:
             name: "Check difference to repository"
             id: "list_diff"
             run: |
-                if ! git diff --exit-code; then
+                if ! git diff --exit-code ':!:composer.json'; then
                     echo "exit_status=1" >>"${GITHUB_OUTPUT}"
                 fi
         -
