@@ -9,7 +9,6 @@
   "require": {
     "php": "^8.0",
     "illuminate/support": "*",
-    "laravel/nova": "^4.32",
     "zadarma/user-api-v1": "^1.1"
   },
   "autoload": {
