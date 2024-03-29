@@ -41,9 +41,9 @@ class ZadarmaWebhookController extends Controller
         $this->log = Log::channel(config('nova-zadarma.webhook_log_channel'));
     }
 
-    /*
-    * https://zadarma.com/pl/support/api/#other_methods
-    */
+    /**
+     * @link https://zadarma.com/pl/support/api/#other_methods
+     */
     public function eventWebhook(Request $request): Response
     {
         $this->log->debug('eventWebhook input', $request->all());
@@ -51,9 +51,9 @@ class ZadarmaWebhookController extends Controller
         return response('not implemented');
     }
 
-    /*
-    * https://zadarma.com/pl/support/api/#api_webhooks
-    */
+    /**
+     * @link https://zadarma.com/pl/support/api/#api_webhooks
+     */
     public function pbxCallWebhook(Request $request): Response
     {
         // for some reason, caller_id or called_did sometimes does not have "+" at the beginning
