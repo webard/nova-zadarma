@@ -34,13 +34,16 @@ jobs:
             name: "Install dependencies"
             run: "composer update --no-interaction"
         -
+            name: "Revert composer.json"
+            run: "git checkout -- composer.json"
+        -
             name: "Fix violations"
             run: "composer exec -- pint -v"
         -
             name: "Check difference to repository"
             id: "list_diff"
             run: |
-                if ! git diff --exit-code ':!:composer.json'; then
+                if ! git diff --exit-code; then
                     echo "exit_status=1" >>"${GITHUB_OUTPUT}"
                 fi
         -
