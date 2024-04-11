@@ -111,6 +111,7 @@ export default {
       this.displayWidget = true;
       this.phone = data.caller;
       this.phone_call_type = 'incoming';
+      this.phoneCallStarted = false;
 
       api.getPhoneNumberInfo(data.caller).then((data) => {
         this.title = data.title;
