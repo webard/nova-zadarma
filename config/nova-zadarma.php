@@ -1,12 +1,17 @@
 <?php
 
 return [
+    'enabled' => env('ZADARMA_ENABLED', true),
+    'models' => [
+        'user' => 'App\\Models\\User'
+    ],
+    // @deprecated
     'user_model' => 'App\\Models\\User',
     'sip_field' => 'zadarma_sip',
     'auth' => [
         'key' => env('ZADARMA_KEY'),
         'secret' => env('ZADARMA_SECRET'),
-        'login_suffix' => env('ZADARMA_LOGIN_SUFFIX', 'UNKNOWN'),
+        'sip_login' => env('ZADARMA_SIP_LOGIN'),
     ],
 
     'webhook_controller' => \Webard\NovaZadarma\Http\Controllers\ZadarmaWebhookController::class,

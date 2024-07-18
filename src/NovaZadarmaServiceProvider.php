@@ -2,14 +2,18 @@
 
 namespace Webard\NovaZadarma;
 
+use Illuminate\Support\Facades\Cache;
+use Laravel\Nova\Nova;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Nova\Events\ServingNova;
+use Laravel\Nova\Exceptions\NovaException;
 use Laravel\Nova\Http\Middleware\Authenticate;
-use Laravel\Nova\Nova;
-use Webard\NovaZadarma\Http\Middleware\Authorize;
 use Webard\NovaZadarma\Services\ZadarmaService;
+use Webard\NovaZadarma\Http\Middleware\Authorize;
+use Webard\NovaZadarma\Exceptions\ZadarmaServiceException;
+use Zadarma_API\ApiException;
 
 class NovaZadarmaServiceProvider extends ServiceProvider
 {
@@ -24,45 +28,16 @@ class NovaZadarmaServiceProvider extends ServiceProvider
             $this->routes();
         });
 
-        $this->publishes([
-            __DIR__.'/../config/nova-zadarma.php' => config_path('nova-zadarma.php'),
-        ], 'config');
-
-        $this->publishesMigrations([
-            __DIR__.'/../database/migrations' => database_path('migrations'),
-        ]);
-
-        Nova::serving(function (ServingNova $event) {
-
-            Nova::script('nova-zadarma', __DIR__.'/../dist/js/asset.js');
-
-            Nova::style('nova-zadarma', __DIR__.'/../dist/css/asset.css');
-
-            $zadarmaService = app(ZadarmaService::class);
-
-            $sipField = config('nova-zadarma.sip_field');
-
-            $userSip = auth()->user()->{$sipField} ?? null;
-
-            $canCall = Gate::allows('zadarmaCall', auth()->user());
-
-            if ($canCall === true && ! empty($userSip)) {
-                $key = $zadarmaService->getWebrtcKey($userSip);
-                $login = $zadarmaService->getWebrtcLogin($userSip);
-            }
-
-            Nova::provideToScript([
-                'zadarma_can_call' => $canCall ?? false,
-                'zadarma_key' => $key ?? null,
-                'zadarma_login' => $login ?? null,
-            ]);
-        });
-
         Gate::define('zadarmaCall', function ($user = null) {
             $sipField = config('nova-zadarma.sip_field');
 
             return $user !== null && $user->$sipField !== null;
         });
+    }
+
+    public function provides()
+    {
+        return ['zadarma'];
     }
 
     /**
@@ -95,6 +70,30 @@ class NovaZadarmaServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        if ($this->app->runningInConsole()) {
+            $this->publish();
+        }
+
+        $this->app->bind('zadarma', function ($app) {
+            $key = $app->config->get('nova-zadarma.auth.key');
+            $secret = $app->config->get('nova-zadarma.auth.secret');
+
+            return new ZadarmaService($key, $secret);
+        });
+
+        $this->mergeConfigFrom(__DIR__.'/../config/nova-zadarma.php', 'nova-zadarma');
+    }
+
+    protected function publish(): void
+    {
+        $this->publishes([
+            __DIR__.'/../config/nova-zadarma.php' => config_path('nova-zadarma.php'),
+        ], 'config');
+
+        $this->publishesMigrations([
+            __DIR__.'/../database/migrations' => database_path('migrations'),
+        ]);
+
+
     }
 }

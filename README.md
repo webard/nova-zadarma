@@ -5,6 +5,26 @@
 - tests
 - webhook validation
 
+## Installation
+
+Install package:
+
+```sh
+composer require webard/nova-zadarma
+```
+
+Publish config:
+
+```sh
+php artisan vendor:publish --provider="Webard\NovaZadarma\NovaZadarmaServiceProvider" --tag=config
+```
+
+Publish migrations:
+
+```sh
+php artisan vendor:publish --provider="Webard\NovaZadarma\NovaZadarmaServiceProvider" --tag=migration
+```
+
 ## Webhooks
 
 In Zadarma Integrations Notifications set PBX call webhook url to:

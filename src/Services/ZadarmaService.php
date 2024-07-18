@@ -12,31 +12,23 @@ class ZadarmaService
 {
     protected Api $api;
 
-    public function __construct()
+    public function __construct(protected string|null $key, protected string|null $secret)
     {
-        $this->api = new Api(config('nova-zadarma.auth.key'), config('nova-zadarma.auth.secret'));
+        $this->api = new Api($this->key, $this->secret);
     }
 
-    public function getWebrtcLogin(string $sip): string
+    public function getWebrtcLogin(string $sipLogin, string $sip): ?string
     {
-        return config('nova-zadarma.auth.login_suffix', 'UNKNOWN').'-'.$sip;
+        return $sipLogin.'-'.$sip;
     }
 
+    // Zadarma has limit 100 requests per minute
     public function getWebrtcKey(string $sip): ?string
     {
-        // Must be cached due to Zadarma API limits
-        return Cache::remember('nova-zadarma-key2-'.$sip, 60, function () use ($sip) {
-            try {
-                return $this->api->getWebrtcKey($sip)->key;
-            } catch (\Exception $e) {
-                Log::error('Zadarma Webrtc Key Error for SIP '.$sip.': '.$e->getMessage());
-
-                return null;
-            }
-
-        });
+        return $this->api->getWebrtcKey($sip)->key;
     }
 
+    // TODO: remove from this
     public function getRecordingUrl(string $pbxCallId): ?string
     {
         $pbxRecordRequest = $this->api->getPbxRecord(null, $pbxCallId, 180);
