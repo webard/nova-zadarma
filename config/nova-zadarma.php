@@ -3,7 +3,7 @@
 return [
     'enabled' => env('ZADARMA_ENABLED', true),
     'models' => [
-        'user' => 'App\\Models\\User'
+        'user' => 'App\\Models\\User',
     ],
     // @deprecated
     'user_model' => 'App\\Models\\User',

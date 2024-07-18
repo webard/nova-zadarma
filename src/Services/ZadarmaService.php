@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Webard\NovaZadarma\Services;
 
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Zadarma_API\Api;
 
 class ZadarmaService
 {
     protected Api $api;
 
-    public function __construct(protected string|null $key, protected string|null $secret)
+    public function __construct(protected ?string $key, protected ?string $secret)
     {
         $this->api = new Api($this->key, $this->secret);
     }
