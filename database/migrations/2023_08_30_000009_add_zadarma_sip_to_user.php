@@ -14,8 +14,12 @@ return new class() extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table): void {
-            $table->string('phone_number')->nullable()->comment('Phone number in E.164 format.');
-            $table->string('zadarma_sip')->nullable();
+            $table->string('phone_number')
+                ->nullable()
+                ->comment('Phone number in E.164 format.');
+
+            $table->string('zadarma_sip')
+                ->nullable();
         });
     }
 
@@ -26,6 +30,7 @@ return new class() extends Migration
     {
         Schema::table('users', function (Blueprint $table): void {
             $table->dropColumn('phone_number');
+
             $table->dropColumn('zadarma_sip');
         });
     }

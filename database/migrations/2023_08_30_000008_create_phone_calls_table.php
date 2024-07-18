@@ -16,34 +16,46 @@ return new class() extends Migration
         Schema::create('phone_calls', function (Blueprint $table): void {
             $table->id();
 
-            $table->phone('caller_phone_number', 20)->comment('Phone number in E.164 format.');
-            $table->phone('receiver_phone_number')->comment('Phone number in E.164 format.');
+            $table->string('caller_phone_number', 20)
+                ->comment('Phone number in E.164 format.')
+                ->nullable();
 
-            $table->boolean('is_answered')->default(false);
+            $table->unsignedMediumInteger('caller_sip')
+                ->nullable();
 
-            /**
-             * 'answered' – rozmowa,
-             * 'busy' – zajęte,
-             * 'cancel' - odrzucone,
-             * 'no answer' - brak odpowiedzi,
-             * 'failed' - nieudane,
-             * 'no money' - brak środków, przekroczony limit,
-             * 'unallocated number' - numer nie istnieje,
-             * 'no limit' - przekroczony limit,
-             * 'no day limit' - przekroczony dzienny limit,
-             * 'line limit' - przekroczony limit linii,
-             * 'no money, no limit' - przekroczony limit
-             */
-            $table->string('disposition')->default('pending');
-            $table->string('itu_standard_code')->default(null)->comment('ITU-T Recommendation Q.931.');
+            $table->foreignId('caller_id')
+                ->nullable()
+                ->constrained('users');
 
-            $table->unsignedInteger('duration')->nullable();
+            $table->string('receiver_phone_number', 20)
+                ->comment('Phone number in E.164 format.')
+                ->nullable();
+
+            $table->unsignedMediumInteger('receiver_sip'
+            )->nullable();
+
+            $table->foreignId('receiver_id')
+                ->nullable()
+                ->constrained('users');
+
+            $table->boolean('is_answered')
+                ->default(false);
+
+            $table->string('disposition'
+            )->default('pending');
+
+            $table->unsignedInteger('duration'
+            )->nullable();
 
             $table->string('type');
 
-            $table->string('recording')->nullable();
+            $table->string('recording')
+                ->nullable();
 
             $table->timestamps();
+
+            $table->timestamp('ended_at')
+                ->nullable();
         });
     }
 

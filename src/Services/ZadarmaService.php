@@ -26,7 +26,6 @@ class ZadarmaService
         return $this->api->getWebrtcKey($sip)->key;
     }
 
-    // TODO: remove from this
     public function getRecordingUrl(string $pbxCallId): ?string
     {
         $pbxRecordRequest = $this->api->getPbxRecord(null, $pbxCallId, 180);

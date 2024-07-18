@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Nova;
 use Webard\NovaZadarma\Http\Middleware\Authorize;
+use Webard\NovaZadarma\Nova\PhoneCall;
 use Webard\NovaZadarma\Services\ZadarmaService;
 
 class NovaZadarmaServiceProvider extends ServiceProvider
@@ -28,6 +29,10 @@ class NovaZadarmaServiceProvider extends ServiceProvider
 
             return $user !== null && $user->$sipField !== null;
         });
+
+        if ($this->app->config->get('nova-zadarma.register_resource', false)) {
+            Nova::resources([PhoneCall::class]);
+        }
     }
 
     public function provides()

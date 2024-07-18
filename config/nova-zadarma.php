@@ -2,8 +2,12 @@
 
 return [
     'enabled' => env('ZADARMA_ENABLED', true),
+    'register_resource' => true,
     'models' => [
         'user' => 'App\\Models\\User',
+    ],
+    'resources' => [
+        'user' => 'App\\Nova\\User',
     ],
     // @deprecated
     'user_model' => 'App\\Models\\User',

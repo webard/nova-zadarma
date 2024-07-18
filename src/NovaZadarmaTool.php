@@ -67,6 +67,6 @@ class NovaZadarmaTool extends Tool
 
     public function menu(Request $request): mixed
     {
-        return null;
+        return [];
     }
 }
