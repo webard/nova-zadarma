@@ -28,6 +28,10 @@ class NovaZadarmaServiceProvider extends ServiceProvider
             __DIR__.'/../config/nova-zadarma.php' => config_path('nova-zadarma.php'),
         ], 'config');
 
+        $this->publishesMigrations([
+            __DIR__.'/../database/migrations' => database_path('migrations'),
+        ]);
+
         Nova::serving(function (ServingNova $event) {
 
             Nova::script('nova-zadarma', __DIR__.'/../dist/js/asset.js');
