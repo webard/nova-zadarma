@@ -75,13 +75,13 @@ class PhoneCall extends Resource
                     ->asSubTitle(),
 
                 Line::make(Nova::__('Caller SIP'), 'caller_sip')
-                ->displayUsing(function ($value) {
-                    return $value !== null ? Nova::__('SIP').': '.$value : null;
-                })
-                ->asSmall(),
+                    ->displayUsing(function ($value) {
+                        return $value !== null ? Nova::__('SIP').': '.$value : null;
+                    })
+                    ->asSmall(),
             ])
-            ->onlyOnIndex()
-            ->sortable(),
+                ->onlyOnIndex()
+                ->sortable(),
 
             Panel::make(Nova::__('Caller'), [
                 BelongsTo::make(Nova::__('Caller'), 'caller', config('nova-zadarma.nova_resources.user.class'))
@@ -103,13 +103,13 @@ class PhoneCall extends Resource
                     ->asSubTitle(),
 
                 Line::make(Nova::__('Receiver SIP'), 'receiver_sip')
-                ->displayUsing(function ($value) {
-                    return $value !== null ? Nova::__('SIP').': '.$value : null;
-                })
-                ->asSmall(),
+                    ->displayUsing(function ($value) {
+                        return $value !== null ? Nova::__('SIP').': '.$value : null;
+                    })
+                    ->asSmall(),
             ])
-            ->onlyOnIndex()
-            ->sortable(),
+                ->onlyOnIndex()
+                ->sortable(),
 
             Panel::make(Nova::__('Receiver'), [
                 BelongsTo::make(Nova::__('Receiver'), 'receiver', config('nova-zadarma.nova_resources.user.class'))
