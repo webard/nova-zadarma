@@ -2,37 +2,37 @@
 
 namespace Webard\NovaZadarma\Http\Controllers\Webhooks;
 
+use Illuminate\Http\JsonResponse;
+use Webard\NovaZadarma\Enums\PhoneCallDisposition;
+use Webard\NovaZadarma\Enums\PhoneCallType;
+use Webard\NovaZadarma\Http\Requests\OutgoingCallStartSignedRequest;
+use Webard\NovaZadarma\Models\PhoneCall;
+
 class OutgoingCallStartController
 {
-    public function __invoke()
+    public function __invoke(OutgoingCallStartSignedRequest $request): JsonResponse
     {
-        $validData = $validator->validated();
+        $data = $request->validated();
 
-        $className = config('nova-zadarma.webhooks.outgoing_call_start');
+        $phoneCall = PhoneCall::query()
+            ->where([
+                'disposition' => PhoneCallDisposition::Pending,
+                'type' => PhoneCallType::Outgoing,
+                'caller_sip' => $data['internal'],
+                'receiver_phone_number' => $data['destination'],
+                'pbx_call_id' => null,
+            ])
+            ->firstOrFail();
 
-        $this->log->debug('[handleOutgoingStart] validated successfully, handling event', [
-            [
-                'valid_data' => $validData,
-                'handler' => $className,
-            ],
+        $phoneCall->update([
+            'pbx_call_id' => $data['pbx_call_id'],
+            'caller_phone_number' => $data['caller_id'],
+            'started_at' => $data['call_start'],
         ]);
 
-        try {
-            $class = new $className($this->log);
-            $response = $class($validData, $request);
-
-            return response($response === true ? 'ok' : 'error');
-        } catch (\Throwable $e) {
-            $this->log->error('[handleOutgoingStart] Error while handling', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
-
-            return response('exception');
-        }
-
         return response()->json([
-            'message' => 'Outgoing call started',
+            'success' => true,
+            'message' => 'Outgoing call start saved',
         ]);
     }
 }

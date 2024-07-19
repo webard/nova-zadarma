@@ -14,6 +14,7 @@ use Laravel\Nova\Resource;
 use Webard\NovaZadarma\Enums\PhoneCallDisposition;
 use Webard\NovaZadarma\Enums\PhoneCallType;
 use Webard\NovaZadarma\Models\PhoneCall as ModelsPhoneCall;
+use Webard\NovaZadarma\Nova\Fields\Audio;
 use Webard\NovaZadarma\Nova\Fields\EnumBadge;
 
 class PhoneCall extends Resource
@@ -72,6 +73,9 @@ class PhoneCall extends Resource
                 ->sortable()
                 ->filterable()
                 ->nullable(),
+
+            Audio::make('Recording', 'recording', config('nova-zadarma.recordings.disk'))
+                ->hideFromIndex(),
 
             DateTime::make(Nova::__('Created At'), 'created_at')
                 ->sortable()

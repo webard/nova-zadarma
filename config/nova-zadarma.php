@@ -9,9 +9,9 @@ return [
     'resources' => [
         'user' => 'App\\Nova\\User',
     ],
-    // @deprecated
-    'user_model' => 'App\\Models\\User',
+
     'sip_field' => 'zadarma_sip',
+
     'auth' => [
         'key' => env('ZADARMA_KEY'),
         'secret' => env('ZADARMA_SECRET'),
@@ -25,6 +25,18 @@ return [
     'webhook_log_channel' => env('ZADARMA_WEBHOOK_LOG_CHANNEL', 'null'),
 
     'webhook_verify_signature' => env('ZADARMA_WEBHOOK_VERIFY_SIGNATURE', true),
+
+    'save_recordings' => true,
+
+    // Supported any public disk or private disk with temporaryUrl() method
+    // Public disk must have 'visibility' => 'public' in config/filesystems.php
+    // Local disk is not supported because he doesn't have a temporaryUrl() method
+    'recordings' => [
+        'store' => true,
+        'disk' => 'public',
+        'path' => 'phone_call_recordings',
+        'private_disk_ttl' => 60 * 10,
+    ],
 
     'webhooks' => [
         'incoming_call_start' => '',

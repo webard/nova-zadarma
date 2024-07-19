@@ -3,39 +3,30 @@
 namespace Webard\NovaZadarma\Http\Controllers\Webhooks;
 
 use Illuminate\Http\JsonResponse;
+use Webard\NovaZadarma\Enums\PhoneCallDisposition;
 use Webard\NovaZadarma\Http\Requests\OutgoingCallEndSignedRequest;
+use Webard\NovaZadarma\Models\PhoneCall;
 
 class OutgoingCallEndController
 {
     public function __invoke(OutgoingCallEndSignedRequest $request): JsonResponse
     {
-        $validData = $request->validated();
+        $data = $request->validated();
 
-        $className = config('nova-zadarma.webhooks.outgoing_call_end');
+        $phoneCall = PhoneCall::query()->pbxCallId($data['pbx_call_id'])->firstOrFail();
 
-        // $this->log->debug('[handleOutgoingEnd] validated successfully, handling event', [
-        //     [
-        //         'valid_data' => $validData,
-        //         'handler' => $className,
-        //     ],
-        // ]);
+        $disposition = PhoneCallDisposition::from($data['disposition']);
 
-        // try {
-        //     $class = new $className($this->log);
-        //     $response = $class($validData, $request);
-
-        //     return response($response === true ? 'ok' : 'error');
-        // } catch (\Throwable $e) {
-        //     $this->log->error('[handleOutgoingEnd] Error while handling', [
-        //         'error' => $e->getMessage(),
-        //         'trace' => $e->getTraceAsString(),
-        //     ]);
-
-        //     return response('exception');
-        // }
+        $phoneCall->update([
+            'ended_at' => now(config('app.timezone')),
+            'is_answered' => $disposition === PhoneCallDisposition::Answered,
+            'disposition' => $disposition,
+            'duration' => $data['duration'],
+        ]);
 
         return response()->json([
             'success' => true,
+            'message' => 'Outgoing call end saved',
         ]);
     }
 }

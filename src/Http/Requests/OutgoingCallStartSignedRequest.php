@@ -26,11 +26,14 @@ class OutgoingCallStartSignedRequest extends SignedRequest
     public function rules(): array
     {
         return [
+            'call_start' => 'required|date_format:Y-m-d H:i:s|after_or_equal:'.date(DATE_ATOM),
             'pbx_call_id' => 'required|string',
-            'call_start' => 'required|date',
-            'internal' => 'string',
-            'destination' => 'phone',
-            'caller_id' => 'phone',
+            'caller_id' => 'nullable|phone',
+            // ? In documentation marked as optional, but in our implementation every caller should have a SIP
+            'internal' => 'required|integer',
+            'destination' => 'required|phone',
+            // ? Present in webhook data but not in the documentation
+            'calltype' => 'string',
         ];
     }
 }

@@ -9,6 +9,30 @@ abstract class SignedRequest extends FormRequest
 {
     use HandleValidationResponseAsJson;
 
+    protected function fixRequestPhoneNumbers(): void
+    {
+        // for some reason, caller_id or called_did sometimes does not have "+" at the beginning
+        // trying to fix this to make it work with validator
+        $calledDid = $this->input('called_did');
+        if ($calledDid !== null && str_contains($calledDid, '+') === false) {
+            $this->merge(['called_did' => '+'.$calledDid]);
+        }
+
+        $callerId = $this->input('caller_id');
+        if ($callerId !== null && str_contains($callerId, '+') === false) {
+            $this->merge(['caller_id' => '+'.$callerId]);
+        } elseif ($callerId === '0') {
+            $this->merge(['caller_id' => null]);
+        }
+    }
+
+    public function validationData()
+    {
+        $this->fixRequestPhoneNumbers();
+
+        return $this->all();
+    }
+
     abstract public function signatureFields(): array;
 
     public function authorize(): bool

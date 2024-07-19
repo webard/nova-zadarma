@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Webard\NovaZadarma\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Routing\ControllerDispatcher;
 use Illuminate\Routing\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,25 +17,8 @@ use Webard\NovaZadarma\Http\Requests\WebhookRequest;
 
 class ZadarmaWebhookForwardController
 {
-    private function fixRequestPhoneNumbers(Request $request): void
-    {
-        // for some reason, caller_id or called_did sometimes does not have "+" at the beginning
-        // trying to fix this to make it work with validator
-        $calledDid = $request->input('called_did');
-        if ($calledDid !== null && str_contains($calledDid, '+') === false) {
-            $request->merge(['called_did' => '+'.$calledDid]);
-        }
-
-        $callerId = $request->input('caller_id');
-        if ($callerId !== null && str_contains($callerId, '+') === false) {
-            $request->merge(['caller_id' => '+'.$callerId]);
-        }
-    }
-
     public function __invoke(WebhookRequest $request): Response
     {
-        $this->fixRequestPhoneNumbers($request);
-
         $controller = $this->matchController($request->input('event'));
 
         return $this->forwardRequestToController($controller);

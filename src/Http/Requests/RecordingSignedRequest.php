@@ -26,6 +26,7 @@ class RecordingSignedRequest extends SignedRequest
     {
         return [
             'pbx_call_id' => 'required|string',
+            'call_id_with_rec' => 'required|string',
         ];
     }
 }

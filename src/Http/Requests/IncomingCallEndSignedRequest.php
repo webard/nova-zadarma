@@ -3,6 +3,7 @@
 namespace Webard\NovaZadarma\Http\Requests;
 
 use Illuminate\Validation\Rule;
+use Webard\NovaZadarma\Enums\PhoneCallDisposition;
 use Webard\NovaZadarma\Http\SignedRequest;
 
 class IncomingCallEndSignedRequest extends SignedRequest
@@ -35,7 +36,7 @@ class IncomingCallEndSignedRequest extends SignedRequest
 
             'duration' => 'integer',
             'is_recorded' => 'boolean',
-            'disposition' => Rule::in(['answered', 'busy', 'cancel', 'no answer', 'failed', 'no money', 'unallocated number', 'no limit', 'no day limit', 'line limit', 'no money, no limit']),
+            'disposition' => Rule::enum(PhoneCallDisposition::class),
             'status_code' => 'integer',
 
             'internal' => 'string|nullable',

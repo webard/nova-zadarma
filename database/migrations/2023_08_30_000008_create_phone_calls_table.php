@@ -16,6 +16,10 @@ return new class() extends Migration
         Schema::create('phone_calls', function (Blueprint $table): void {
             $table->id();
 
+            $table->string('pbx_call_id')
+                ->nullable()
+                ->unique();
+
             $table->string('caller_phone_number', 20)
                 ->comment('Phone number in E.164 format.')
                 ->nullable();
@@ -52,7 +56,13 @@ return new class() extends Migration
             $table->string('recording')
                 ->nullable();
 
+            $table->string('recording_disk')
+                ->nullable();
+
             $table->timestamps();
+
+            $table->timestamp('started_at')
+                ->nullable();
 
             $table->timestamp('ended_at')
                 ->nullable();

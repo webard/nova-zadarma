@@ -2,37 +2,65 @@
 
 namespace Webard\NovaZadarma\Http\Controllers\Webhooks;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Webard\NovaZadarma\Http\Requests\RecordingSignedRequest;
+use Webard\NovaZadarma\Models\PhoneCall;
+use Webard\NovaZadarma\Services\ZadarmaService;
 
 class RecordingController
 {
-    public function __invoke(RecordingSignedRequest $request)
+    public function __invoke(RecordingSignedRequest $request, ZadarmaService $zadarmaService)
     {
-        $validData = $request->validated();
+        $data = $request->validated();
 
-        $className = config('nova-zadarma.webhooks.phone_call_record');
+        $phoneCall = PhoneCall::query()->pbxCallId($data['pbx_call_id'])->firstOrFail();
 
-        $this->log->debug('[handleRecord] validated successfully, handling event', [
-            [
-                'valid_data' => $validData,
-                'handler' => $className,
-            ],
+        $recordingUrl = $zadarmaService->getRecordingUrl($data['pbx_call_id']);
+
+        if ($recordingUrl === null) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Recording not found',
+            ]);
+        }
+
+        if (config('nova-zadarma.recordings.store', false) === true) {
+            $recordingFile = file_get_contents($recordingUrl);
+
+            $randomString = Str::random(20);
+
+            $fileName = 'phone_call_'.$phoneCall->id.'_'.$randomString.'.mp3';
+
+            $recording = $this->getRecordingPath().$fileName;
+
+            Storage::disk(config('nova-zadarma.recordings.disk'))->put($recording, $recordingFile);
+        } else {
+            $recording = $recordingUrl;
+        }
+
+        $phoneCall->update([
+            'recording' => $recording,
         ]);
 
-        $zadarmaUrl = $this->zadarmaService->getRecordingUrl($validData['pbx_call_id']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Recording saved',
+        ]);
+    }
 
-        try {
-            $class = new $className($this->log);
-            $response = $class($zadarmaUrl, $validData['pbx_call_id'], $request);
+    private function getRecordingPath(): string
+    {
+        $path = config('nova-zadarma.recordings.path', null);
 
-            return response($response === true ? 'ok' : 'error');
-        } catch (\Throwable $e) {
-            $this->log->error('[handleOutgoingEnd] Error while handling', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
+        if ($path === null) {
+            return '';
+        }
 
-            return response('exception');
+        if (str_ends_with($path, '/')) {
+            return $path;
+        } else {
+            return $path.'/';
         }
     }
 }
