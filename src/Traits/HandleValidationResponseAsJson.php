@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Symfony\Component\HttpFoundation\Response;
 
-trait HandleValidationResponsesAsJson
+trait HandleValidationResponseAsJson
 {
     protected function failedValidation(Validator $validator): void
     {

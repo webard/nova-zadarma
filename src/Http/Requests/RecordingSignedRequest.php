@@ -4,7 +4,7 @@ namespace Webard\NovaZadarma\Http\Requests;
 
 use Webard\NovaZadarma\Http\SignedRequest;
 
-class IncomingCallStartRequest extends SignedRequest
+class RecordingSignedRequest extends SignedRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -12,9 +12,8 @@ class IncomingCallStartRequest extends SignedRequest
     public function signatureFields(): array
     {
         return [
-            'caller_id',
-            'caller_did',
-            'call_start',
+            'pbx_call_id',
+            'call_id_with_rec',
         ];
     }
 
@@ -27,9 +26,6 @@ class IncomingCallStartRequest extends SignedRequest
     {
         return [
             'pbx_call_id' => 'required|string',
-            'call_start' => 'required|date',
-            'caller_id' => 'phone',
-            'called_did' => 'phone',
         ];
     }
 }

@@ -3,11 +3,11 @@
 namespace Webard\NovaZadarma\Http;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Webard\NovaZadarma\Traits\HandleValidationResponsesAsJson;
+use Webard\NovaZadarma\Traits\HandleValidationResponseAsJson;
 
 abstract class SignedRequest extends FormRequest
 {
-    use HandleValidationResponsesAsJson;
+    use HandleValidationResponseAsJson;
 
     abstract public function signatureFields(): array;
 

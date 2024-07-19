@@ -4,11 +4,11 @@ namespace Webard\NovaZadarma\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Webard\NovaZadarma\Traits\HandleValidationResponsesAsJson;
+use Webard\NovaZadarma\Traits\HandleValidationResponseAsJson;
 
 class WebhookRequest extends FormRequest
 {
-    use HandleValidationResponsesAsJson;
+    use HandleValidationResponseAsJson;
 
     public function authorize(): bool
     {

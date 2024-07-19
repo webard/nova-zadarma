@@ -3,11 +3,11 @@
 namespace Webard\NovaZadarma\Http\Controllers\Webhooks;
 
 use Illuminate\Http\JsonResponse;
-use Webard\NovaZadarma\Http\Requests\OutgoingCallEndRequest;
+use Webard\NovaZadarma\Http\Requests\OutgoingCallEndSignedRequest;
 
 class OutgoingCallEndController
 {
-    public function __invoke(OutgoingCallEndRequest $request): JsonResponse
+    public function __invoke(OutgoingCallEndSignedRequest $request): JsonResponse
     {
         $validData = $request->validated();
 
