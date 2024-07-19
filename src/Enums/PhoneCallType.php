@@ -14,16 +14,16 @@ enum PhoneCallType: string
     public static function map(): array
     {
         return [
-            'incoming' => 'danger',
-            'outgoing' => 'success',
+            'incoming' => 'success',
+            'outgoing' => 'info',
         ];
     }
 
     public static function icons(): array
     {
         return [
-            'danger' => 'check-circle',
-            'success' => 'exclamation-circle',
+            'info' => 'phone-outgoing',
+            'success' => 'phone-incoming',
         ];
     }
 }

@@ -15,16 +15,16 @@ use Webard\NovaZadarma\Http\Controllers\Webhooks\OutgoingCallStartController;
 use Webard\NovaZadarma\Http\Controllers\Webhooks\RecordingController;
 use Webard\NovaZadarma\Http\Requests\WebhookRequest;
 
-class ZadarmaWebhookForwardController
+class ZadarmaWebhookController
 {
     public function __invoke(WebhookRequest $request): Response
     {
-        $controller = $this->matchController($request->input('event'));
+        $controller = $this->matchControllerToEvent($request->input('event'));
 
-        return $this->forwardRequestToController($controller);
+        return $this->forwardRequestToNextController($controller);
     }
 
-    private function forwardRequestToController(string $controller)
+    private function forwardRequestToNextController(string $controller)
     {
         $container = app();
 
@@ -38,7 +38,7 @@ class ZadarmaWebhookForwardController
         return (new ControllerDispatcher($container))->dispatch($router, $controllerInstance, '__invoke');
     }
 
-    private function matchController(string $event)
+    private function matchControllerToEvent(string $event)
     {
         return match ($event) {
             'NOTIFY_OUT_START' => OutgoingCallStartController::class,
@@ -46,7 +46,7 @@ class ZadarmaWebhookForwardController
             'NOTIFY_START' => IncomingCallStartController::class,
             'NOTIFY_END' => IncomingCallEndController::class,
             'NOTIFY_RECORD' => RecordingController::class,
-            default => throw new NotFoundHttpException('Unknown event'),
+            default => throw new NotFoundHttpException('Unsupported event'),
         };
     }
 }

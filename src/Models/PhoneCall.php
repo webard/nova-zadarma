@@ -5,7 +5,6 @@ namespace Webard\NovaZadarma\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Foundation\Auth\User;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use Webard\NovaZadarma\Enums\PhoneCallDisposition;
 use Webard\NovaZadarma\Enums\PhoneCallType;
@@ -45,17 +44,17 @@ class PhoneCall extends Model
 
     public function receiver(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'receiver_id');
+        return $this->belongsTo(config('nova-zadarma.models.user.class'), 'receiver_id');
     }
 
     public function caller(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'caller_id');
+        return $this->belongsTo(config('nova-zadarma.models.user.class'), 'caller_id');
     }
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)
+        return $this->belongsToMany(config('nova-zadarma.models.user.class'))
             ->using(PhoneCallUser::class)
             ->withPivot(['role']);
     }

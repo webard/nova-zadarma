@@ -24,7 +24,7 @@ return new class() extends Migration
                 ->comment('Phone number in E.164 format.')
                 ->nullable();
 
-            $table->unsignedMediumInteger('caller_sip')
+            $table->unsignedSmallInteger('caller_sip')
                 ->nullable();
 
             $table->foreignId('caller_id')
@@ -35,8 +35,8 @@ return new class() extends Migration
                 ->comment('Phone number in E.164 format.')
                 ->nullable();
 
-            $table->unsignedMediumInteger('receiver_sip'
-            )->nullable();
+            $table->unsignedSmallInteger('receiver_sip')
+                ->nullable();
 
             $table->foreignId('receiver_id')
                 ->nullable()
@@ -45,18 +45,15 @@ return new class() extends Migration
             $table->boolean('is_answered')
                 ->default(false);
 
-            $table->string('disposition'
-            )->default('pending');
+            $table->string('disposition')
+                ->default('pending');
 
-            $table->unsignedInteger('duration'
-            )->nullable();
+            $table->unsignedInteger('duration')
+                ->nullable();
 
             $table->string('type');
 
             $table->string('recording')
-                ->nullable();
-
-            $table->string('recording_disk')
                 ->nullable();
 
             $table->timestamps();

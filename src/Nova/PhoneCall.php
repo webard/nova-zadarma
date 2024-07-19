@@ -22,18 +22,13 @@ use Webard\NovaZadarma\Nova\Fields\EnumBadge;
 
 class PhoneCall extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var class-string<\App\Models\User>
-     */
     public static $model = ModelsPhoneCall::class;
 
     public function title()
     {
         return Nova::__(':caller to :receiver', [
-            'caller' => $this->caller?->name ?? $this->caller_phone_number,
-            'receiver' => $this->receiver?->name ?? $this->receiver_phone_number,
+            'caller' => $this->caller?->{config('nova-zadarma.models.user.name_field')} ?? $this->caller_phone_number,
+            'receiver' => $this->receiver?->{config('nova-zadarma.models.user.name_field')} ?? $this->receiver_phone_number,
         ]);
     }
 
@@ -62,7 +57,7 @@ class PhoneCall extends Resource
                 ->filterable(),
 
             Panel::make(Nova::__('Caller'), [
-                BelongsTo::make(Nova::__('Caller'), 'caller', config('nova-zadarma.resources.user'))
+                BelongsTo::make(Nova::__('Caller'), 'caller', config('nova-zadarma.nova_resources.user.class'))
                     ->sortable()
                     ->filterable()
                     ->searchable(),
@@ -75,7 +70,7 @@ class PhoneCall extends Resource
             ]),
 
             Panel::make(Nova::__('Receiver'), [
-                BelongsTo::make(Nova::__('Receiver'), 'receiver', config('nova-zadarma.resources.user'))
+                BelongsTo::make(Nova::__('Receiver'), 'receiver', config('nova-zadarma.nova_resources.user.class'))
                     ->sortable()
                     ->filterable()
                     ->searchable(),

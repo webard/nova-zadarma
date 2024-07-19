@@ -2,33 +2,47 @@
 
 namespace Webard\NovaZadarma\Http\Controllers\Webhooks;
 
+use Webard\NovaZadarma\Enums\PhoneCallDisposition;
+use Webard\NovaZadarma\Http\Requests\IncomingCallEndSignedRequest;
+use Webard\NovaZadarma\Models\PhoneCall;
+
 class IncomingCallEndController
 {
-    public function __invoke()
+    public function __invoke(IncomingCallEndSignedRequest $request)
     {
-        $validData = $validator->validated();
+        $data = $request->validated();
 
-        $className = config('nova-zadarma.webhooks.incoming_call_end');
+        $phoneCall = PhoneCall::query()
+            ->pbxCallId($data['pbx_call_id'])
+            ->firstOrFail();
 
-        $this->log->debug('[handleIncomingEnd] validated successfully, handling event', [
-            [
-                'valid_data' => $validData,
-                'handler' => $className,
-            ],
+        $disposition = PhoneCallDisposition::from($data['disposition']);
+
+        $duration = (int) $data['duration'] > 0 ? $data['duration'] : null;
+
+        $phoneCall->fill([
+            'ended_at' => now(config('app.timezone')),
+            'disposition' => $disposition,
+            'duration' => $duration,
+            'is_answered' => $disposition === PhoneCallDisposition::Answered,
+            'receiver_sip' => $data['last_internal'],
         ]);
 
-        try {
-            $class = new $className($this->log);
-            $response = $class($validData, $request);
+        $userModel = config('nova-zadarma.models.user.class');
 
-            return response($response === true ? 'ok' : 'error');
-        } catch (\Throwable $e) {
-            $this->log->error('[handleIncomingEnd] Error while handling', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
+        $receiver = $userModel::query()
+            ->where(config('nova-zadarma.models.user.sip_field'), $data['last_internal'])
+            ->first();
 
-            return response('exception');
+        if ($receiver) {
+            $phoneCall->receiver()->associate($receiver);
         }
+
+        $phoneCall->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Incoming call end saved',
+        ]);
     }
 }

@@ -14,7 +14,9 @@ class RecordingController
     {
         $data = $request->validated();
 
-        $phoneCall = PhoneCall::query()->pbxCallId($data['pbx_call_id'])->firstOrFail();
+        $phoneCall = PhoneCall::query()
+            ->pbxCallId($data['pbx_call_id'])
+            ->firstOrFail();
 
         $recordingUrl = $zadarmaService->getRecordingUrl($data['pbx_call_id']);
 
@@ -34,7 +36,8 @@ class RecordingController
 
             $recording = $this->getRecordingPath().$fileName;
 
-            Storage::disk(config('nova-zadarma.recordings.disk'))->put($recording, $recordingFile);
+            Storage::disk(config('nova-zadarma.recordings.disk'))
+                ->put($recording, $recordingFile);
         } else {
             $recording = $recordingUrl;
         }

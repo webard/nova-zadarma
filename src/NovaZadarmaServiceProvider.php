@@ -26,12 +26,12 @@ class NovaZadarmaServiceProvider extends ServiceProvider
         });
 
         Gate::define('zadarmaCall', function ($user = null) {
-            $sipField = config('nova-zadarma.sip_field');
+            $sipField = config('nova-zadarma.models.user.sip_field');
 
             return $user !== null && $user->$sipField !== null;
         });
 
-        if ($this->app->config->get('nova-zadarma.register_resource', false)) {
+        if ($this->app->config->get('nova-zadarma.nova_resources.phone_call.register', false)) {
             Nova::resources([PhoneCall::class]);
         }
     }

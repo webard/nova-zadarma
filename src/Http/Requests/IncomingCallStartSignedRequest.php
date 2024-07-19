@@ -26,10 +26,10 @@ class IncomingCallStartSignedRequest extends SignedRequest
     public function rules(): array
     {
         return [
+            'call_start' => 'required|date_format:Y-m-d H:i:s|after_or_equal:'.date(DATE_ATOM),
             'pbx_call_id' => 'required|string',
-            'call_start' => 'required|date',
-            'caller_id' => 'phone',
-            'called_did' => 'phone',
+            'caller_id' => 'required|phone',
+            'called_did' => 'required|phone',
         ];
     }
 }

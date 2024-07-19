@@ -9,7 +9,9 @@ abstract class SignedRequest extends FormRequest
 {
     use HandleValidationResponseAsJson;
 
-    protected function fixRequestPhoneNumbers(): void
+    abstract public function signatureFields(): array;
+
+    private function fixRequestPhoneNumbers(): void
     {
         // for some reason, caller_id or called_did sometimes does not have "+" at the beginning
         // trying to fix this to make it work with validator
@@ -32,8 +34,6 @@ abstract class SignedRequest extends FormRequest
 
         return $this->all();
     }
-
-    abstract public function signatureFields(): array;
 
     public function authorize(): bool
     {

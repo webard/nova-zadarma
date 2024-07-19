@@ -28,20 +28,20 @@ class NovaZadarmaTool extends Tool
             return;
         }
 
-        $sipField = config('nova-zadarma.sip_field');
-        $userSip = $user->$sipField;
-
-        if ($userSip === null) {
-            return;
-        }
-
         $canCall = Gate::allows('zadarmaCall', $user);
 
         if (! $canCall) {
             return;
         }
 
-        [$key, $login] = Cache::remember('zadarma_webrtc_key3_'.$userSip, 60, function () use ($userSip, $sipLogin) {
+        $sipField = config('nova-zadarma.models.user.sip_field');
+        $userSip = $user->$sipField;
+
+        if ($userSip === null) {
+            return;
+        }
+
+        [$key, $login] = Cache::remember('zadarma_webrtc_key_'.$userSip, 60, function () use ($userSip, $sipLogin) {
             $zadarmaService = app(ZadarmaService::class);
 
             try {

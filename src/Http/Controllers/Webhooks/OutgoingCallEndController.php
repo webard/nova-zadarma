@@ -13,7 +13,9 @@ class OutgoingCallEndController
     {
         $data = $request->validated();
 
-        $phoneCall = PhoneCall::query()->pbxCallId($data['pbx_call_id'])->firstOrFail();
+        $phoneCall = PhoneCall::query()
+            ->pbxCallId($data['pbx_call_id'])
+            ->firstOrFail();
 
         $disposition = PhoneCallDisposition::from($data['disposition']);
 

@@ -2,15 +2,6 @@
 
 return [
     'enabled' => env('ZADARMA_ENABLED', true),
-    'register_resource' => true,
-    'models' => [
-        'user' => 'App\\Models\\User',
-    ],
-    'resources' => [
-        'user' => 'App\\Nova\\User',
-    ],
-
-    'sip_field' => 'zadarma_sip',
 
     'auth' => [
         'key' => env('ZADARMA_KEY'),
@@ -18,15 +9,30 @@ return [
         'sip_login' => env('ZADARMA_SIP_LOGIN'),
     ],
 
-    'webhook_controller' => \Webard\NovaZadarma\Http\Controllers\ZadarmaWebhookForwardController::class,
+    'models' => [
+        'user' => [
+            'class' => 'App\\Models\\User',
+            'sip_field' => 'zadarma_sip',
+            'name_field' => 'name',
+            'phone_number_field' => 'phone_number',
+        ],
+    ],
+    'nova_resources' => [
+        'user' => [
+            'class' => 'App\\Nova\\User',
+        ],
+        'phone_call' => [
+            'register' => true,
+        ],
+    ],
+
+    'webhook_controller' => \Webard\NovaZadarma\Http\Controllers\ZadarmaWebhookController::class,
 
     'phone_number_info_handler' => '',
 
     'webhook_log_channel' => env('ZADARMA_WEBHOOK_LOG_CHANNEL', 'null'),
 
     'webhook_verify_signature' => env('ZADARMA_WEBHOOK_VERIFY_SIGNATURE', true),
-
-    'save_recordings' => true,
 
     // Supported any public disk or private disk with temporaryUrl() method
     // Public disk must have 'visibility' => 'public' in config/filesystems.php

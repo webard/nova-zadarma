@@ -28,19 +28,18 @@ class IncomingCallEndSignedRequest extends SignedRequest
     public function rules(): array
     {
         return [
+            'call_start' => 'required|date_format:Y-m-d H:i:s',
             'pbx_call_id' => 'required|string',
-
-            'caller_id' => 'phone',
-
-            'called_did' => 'phone',
-
-            'duration' => 'integer',
-            'is_recorded' => 'boolean',
-            'disposition' => Rule::enum(PhoneCallDisposition::class),
+            'caller_id' => 'required|phone',
+            'called_did' => 'required|phone',
+            'duration' => 'required|integer',
             'status_code' => 'integer',
+            'is_recorded' => 'boolean',
+            'calltype' => 'string',
+            'disposition' => Rule::enum(PhoneCallDisposition::class),
 
-            'internal' => 'string|nullable',
-            'destination' => 'phone',
+            'internal' => 'required_if:disposition,answered|integer',
+            'last_internal' => 'required_if:disposition,answered|integer',
         ];
     }
 }
