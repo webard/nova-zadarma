@@ -4,12 +4,15 @@ namespace Webard\NovaZadarma\Nova;
 
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
+use Laravel\Nova\Panel;
 use Laravel\Nova\Resource;
 use Webard\NovaZadarma\Enums\PhoneCallDisposition;
 use Webard\NovaZadarma\Enums\PhoneCallType;
@@ -25,6 +28,14 @@ class PhoneCall extends Resource
      * @var class-string<\App\Models\User>
      */
     public static $model = ModelsPhoneCall::class;
+
+    public function title()
+    {
+        return Nova::__(':caller to :receiver', [
+            'caller' => $this->caller?->name ?? $this->caller_phone_number,
+            'receiver' => $this->receiver?->name ?? $this->receiver_phone_number,
+        ]);
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -43,18 +54,38 @@ class PhoneCall extends Resource
 
             EnumBadge::make(Nova::__('Disposition'), 'disposition')
                 ->enum(PhoneCallDisposition::class)
+                ->hideFromIndex()
+                ->filterable(),
+
+            Boolean::make(Nova::__('Is Answered'), 'is_answered')
                 ->sortable()
                 ->filterable(),
 
-            BelongsTo::make(Nova::__('Caller'), 'caller', config('nova-zadarma.resources.user'))
-                ->sortable()
-                ->filterable()
-                ->searchable(),
+            Panel::make(Nova::__('Caller'), [
+                BelongsTo::make(Nova::__('Caller'), 'caller', config('nova-zadarma.resources.user'))
+                    ->sortable()
+                    ->filterable()
+                    ->searchable(),
 
-            BelongsTo::make(Nova::__('Receiver'), 'receiver', config('nova-zadarma.resources.user'))
-                ->sortable()
-                ->filterable()
-                ->searchable(),
+                Text::make(Nova::__('Caller Phone Number'), 'caller_phone_number')
+                    ->hideFromIndex(),
+
+                Text::make(Nova::__('Caller SIP'), 'caller_sip')
+                    ->hideFromIndex(),
+            ]),
+
+            Panel::make(Nova::__('Receiver'), [
+                BelongsTo::make(Nova::__('Receiver'), 'receiver', config('nova-zadarma.resources.user'))
+                    ->sortable()
+                    ->filterable()
+                    ->searchable(),
+
+                Text::make(Nova::__('Receiver Phone Number'), 'receiver_phone_number')
+                    ->hideFromIndex(),
+
+                Text::make(Nova::__('Receiver SIP'), 'receiver_sip')
+                    ->hideFromIndex(),
+            ]),
 
             // BelongsToMany::make('Users', 'users', config('nova-zadarma.resources.user'))
             //     ->fields(function () {
@@ -69,15 +100,16 @@ class PhoneCall extends Resource
             //         ];
             //     }),
 
+            Audio::make('Recording', 'recording', config('nova-zadarma.recordings.disk'))
+                ->hideFromIndex(),
+
             Number::make(Nova::__('Duration'), 'duration')
+                ->displayUsing(fn ($value) => ! empty($value) && (int) $value > 0 ? gmdate("i\m s\s", $value) : null)
                 ->sortable()
                 ->filterable()
                 ->nullable(),
 
-            Audio::make('Recording', 'recording', config('nova-zadarma.recordings.disk'))
-                ->hideFromIndex(),
-
-            DateTime::make(Nova::__('Created At'), 'created_at')
+            DateTime::make(Nova::__('Started At'), 'started_at')
                 ->sortable()
                 ->filterable(),
 

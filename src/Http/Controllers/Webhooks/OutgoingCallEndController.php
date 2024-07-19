@@ -17,11 +17,13 @@ class OutgoingCallEndController
 
         $disposition = PhoneCallDisposition::from($data['disposition']);
 
+        $duration = (int) $data['duration'] > 0 ? $data['duration'] : null;
+
         $phoneCall->update([
             'ended_at' => now(config('app.timezone')),
             'is_answered' => $disposition === PhoneCallDisposition::Answered,
             'disposition' => $disposition,
-            'duration' => $data['duration'],
+            'duration' => $duration,
         ]);
 
         return response()->json([
