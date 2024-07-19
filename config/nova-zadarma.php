@@ -28,7 +28,6 @@ return [
 
     'webhook_controller' => \Webard\NovaZadarma\Http\Controllers\ZadarmaWebhookController::class,
 
-    'phone_number_info_handler' => '',
 
     'webhook_log_channel' => env('ZADARMA_WEBHOOK_LOG_CHANNEL', 'null'),
 

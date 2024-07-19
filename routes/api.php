@@ -15,10 +15,6 @@ use Webard\NovaZadarma\Http\Controllers\NovaZadarmaController;
 |
 */
 
-// Route::get('/', function (Request $request) {
-//     //
-// });
-
 Route::post('/get-phone-number-info', [NovaZadarmaController::class, 'getPhoneNumberInfo'])->middleware('auth');
 
 Route::get('/zadarma-loader-phone-fn.js', function (Request $request) {
