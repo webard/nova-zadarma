@@ -25,17 +25,19 @@ class IncomingCallEndController
             'disposition' => $disposition,
             'duration' => $duration,
             'is_answered' => $disposition === PhoneCallDisposition::Answered,
-            'receiver_sip' => $data['last_internal'],
+            'receiver_sip' => $data['last_internal'] ?? null,
         ]);
 
         $userModel = config('nova-zadarma.models.user.class');
 
-        $receiver = $userModel::query()
-            ->where(config('nova-zadarma.models.user.sip_field'), $data['last_internal'])
-            ->first();
+        if ($disposition === PhoneCallDisposition::Answered) {
+            $receiver = $userModel::query()
+                ->where(config('nova-zadarma.models.user.sip_field'), $data['last_internal'])
+                ->first();
 
-        if ($receiver) {
-            $phoneCall->receiver()->associate($receiver);
+            if ($receiver) {
+                $phoneCall->receiver()->associate($receiver);
+            }
         }
 
         $phoneCall->save();

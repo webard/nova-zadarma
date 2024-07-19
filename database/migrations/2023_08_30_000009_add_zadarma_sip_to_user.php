@@ -16,10 +16,12 @@ return new class() extends Migration
         Schema::table('users', function (Blueprint $table): void {
             $table->string('phone_number')
                 ->nullable()
-                ->comment('Phone number in E.164 format.');
+                ->comment('Phone number in E.164 format.')
+                ->unique();
 
             $table->string('zadarma_sip')
-                ->nullable();
+                ->nullable()
+                ->unique();
         });
     }
 
