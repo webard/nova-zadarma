@@ -3,8 +3,9 @@
 namespace Webard\NovaZadarma\Http\Requests;
 
 use Illuminate\Validation\Rule;
+use Webard\NovaZadarma\Http\SignedRequest;
 
-class IncomingCallEndRequest extends WebhookRequest
+class IncomingCallEndRequest extends SignedRequest
 {
     /**
      * Determine if the user is authorized to make this request.

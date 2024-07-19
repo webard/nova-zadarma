@@ -2,7 +2,9 @@
 
 namespace Webard\NovaZadarma\Http\Requests;
 
-class RecordingRequest extends WebhookRequest
+use Webard\NovaZadarma\Http\SignedRequest;
+
+class RecordingRequest extends SignedRequest
 {
     /**
      * Determine if the user is authorized to make this request.

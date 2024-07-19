@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Webard\NovaZadarma\Http\Controllers\Webhooks\OutgoingCallEndController;
-use Webard\NovaZadarma\Http\Requests\ZadarmaRequest;
+use Webard\NovaZadarma\Http\Requests\WebhookRequest;
 use Webard\NovaZadarma\Services\ZadarmaService;
 
 class ZadarmaWebhookController
@@ -53,7 +53,7 @@ class ZadarmaWebhookController
     /**
      * @link https://zadarma.com/pl/support/api/#api_webhooks
      */
-    public function pbxCallWebhook(ZadarmaRequest $request): Response
+    public function pbxCallWebhook(WebhookRequest $request): Response
     {
         $this->fixRequestPhoneNumbers($request);
 

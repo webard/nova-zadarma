@@ -2,7 +2,9 @@
 
 namespace Webard\NovaZadarma\Http\Requests;
 
-class IncomingCallStartRequest extends WebhookRequest
+use Webard\NovaZadarma\Http\SignedRequest;
+
+class IncomingCallStartRequest extends SignedRequest
 {
     /**
      * Determine if the user is authorized to make this request.

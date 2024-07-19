@@ -3,8 +3,9 @@
 namespace Webard\NovaZadarma\Http\Requests;
 
 use Illuminate\Validation\Rule;
+use Webard\NovaZadarma\Http\SignedRequest;
 
-class OutgoingCallEndRequest extends WebhookRequest
+class OutgoingCallEndRequest extends SignedRequest
 {
     public function signatureFields(): array
     {
