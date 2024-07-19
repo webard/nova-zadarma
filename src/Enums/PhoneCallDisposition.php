@@ -24,7 +24,7 @@ enum PhoneCallDisposition: string
     public static function map(): array
     {
         return [
-            'pending' => 'info',
+            self::Pending->value() => 'info',
             'answered' => 'success',
             'busy' => 'warning',
             'cancel' => 'warning',
