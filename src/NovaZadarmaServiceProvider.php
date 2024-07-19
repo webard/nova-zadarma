@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Nova;
 use Webard\NovaZadarma\Http\Middleware\Authorize;
+use Webard\NovaZadarma\Http\Middleware\ZadarmaWebhookVerify;
 use Webard\NovaZadarma\Nova\PhoneCall;
 use Webard\NovaZadarma\Services\ZadarmaService;
 
@@ -58,8 +59,8 @@ class NovaZadarmaServiceProvider extends ServiceProvider
             ->prefix('nova-vendor/webard/nova-zadarma')
             ->group(__DIR__.'/../routes/api.php');
 
-        Route::middleware(['nova'])
-            ->prefix('nova-vendor/webard/nova-zadarma')
+        Route::middleware(['nova', ZadarmaWebhookVerify::class])
+            ->prefix('nova-vendor/webard/nova-zadarma/webhook')
             ->group(__DIR__.'/../routes/webhook.php');
     }
 
@@ -74,7 +75,7 @@ class NovaZadarmaServiceProvider extends ServiceProvider
             $this->publish();
         }
 
-        $this->app->bind('zadarma', function ($app) {
+        $this->app->bind(ZadarmaService::class, function ($app) {
             $key = $app->config->get('nova-zadarma.auth.key');
             $secret = $app->config->get('nova-zadarma.auth.secret');
 

@@ -54,7 +54,7 @@ class User extends Resource {
 }
 ```
 
-Add action to 'User' resource:
+Add action to `User` resource:
 
 ```php
 use Webard\NovaZadarma\Nova\Actions\MakePhoneCall;
@@ -64,7 +64,8 @@ class User extends Resource {
     {
         return [
             ...
-            MakePhoneCall::make()->sole()
+            MakePhoneCall::make()
+                ->sole()
         ];
     }
 }
@@ -72,6 +73,9 @@ class User extends Resource {
 
 > [!WARNING]
 > `MakePhoneCall` action must be `sole`, because User can call to only one user at time.
+
+> [!INFO]
+> You can run `->withoutConfirmation()` on action to make phone call directly after clicking action.
 
 ## Webhooks
 

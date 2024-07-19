@@ -24,6 +24,8 @@ return [
 
     'webhook_log_channel' => env('ZADARMA_WEBHOOK_LOG_CHANNEL', 'null'),
 
+    'webhook_verify_signature' => env('ZADARMA_WEBHOOK_VERIFY_SIGNATURE', true),
+
     'webhooks' => [
         'incoming_call_start' => '',
         'incoming_call_end' => '',
