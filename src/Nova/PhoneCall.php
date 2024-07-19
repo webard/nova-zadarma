@@ -7,8 +7,10 @@ use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Line;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
@@ -23,6 +25,14 @@ use Webard\NovaZadarma\Nova\Fields\EnumBadge;
 class PhoneCall extends Resource
 {
     public static $model = ModelsPhoneCall::class;
+
+    public static $search = [
+        'id',
+        'caller_phone_number',
+        'caller_sip',
+        'receiver_phone_number',
+        'receiver_sip',
+    ];
 
     public function title()
     {
@@ -56,11 +66,26 @@ class PhoneCall extends Resource
                 ->sortable()
                 ->filterable(),
 
-            Panel::make(Nova::__('Caller'), [
+            Stack::make(Nova::__('Caller'), 'caller_id', [
                 BelongsTo::make(Nova::__('Caller'), 'caller', config('nova-zadarma.nova_resources.user.class'))
-                    ->sortable()
                     ->filterable()
                     ->searchable(),
+
+                Line::make(Nova::__('Caller Phone Number'), 'caller_phone_number')
+                    ->asSubTitle(),
+
+                Line::make(Nova::__('Caller SIP'), 'caller_sip')
+                ->displayUsing(function ($value) {
+                    return $value !== null ? Nova::__('SIP').': '.$value : null;
+                })
+                ->asSmall(),
+            ])
+            ->onlyOnIndex()
+            ->sortable(),
+
+            Panel::make(Nova::__('Caller'), [
+                BelongsTo::make(Nova::__('Caller'), 'caller', config('nova-zadarma.nova_resources.user.class'))
+                    ->hideFromIndex(),
 
                 Text::make(Nova::__('Caller Phone Number'), 'caller_phone_number')
                     ->hideFromIndex(),
@@ -69,11 +94,26 @@ class PhoneCall extends Resource
                     ->hideFromIndex(),
             ]),
 
-            Panel::make(Nova::__('Receiver'), [
+            Stack::make(Nova::__('Receiver'), 'receiver_id', [
                 BelongsTo::make(Nova::__('Receiver'), 'receiver', config('nova-zadarma.nova_resources.user.class'))
-                    ->sortable()
                     ->filterable()
                     ->searchable(),
+
+                Line::make(Nova::__('Receiver Phone Number'), 'receiver_phone_number')
+                    ->asSubTitle(),
+
+                Line::make(Nova::__('Receiver SIP'), 'receiver_sip')
+                ->displayUsing(function ($value) {
+                    return $value !== null ? Nova::__('SIP').': '.$value : null;
+                })
+                ->asSmall(),
+            ])
+            ->onlyOnIndex()
+            ->sortable(),
+
+            Panel::make(Nova::__('Receiver'), [
+                BelongsTo::make(Nova::__('Receiver'), 'receiver', config('nova-zadarma.nova_resources.user.class'))
+                    ->hideFromIndex(),
 
                 Text::make(Nova::__('Receiver Phone Number'), 'receiver_phone_number')
                     ->hideFromIndex(),

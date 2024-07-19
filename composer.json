@@ -1,14 +1,24 @@
 {
   "name": "webard/nova-zadarma",
-  "description": "A Laravel Nova asset.",
+  "description": "Zadarma VoIP integration to Laravel Nova. Make and receive phone calls directly from your admin panel.",
   "keywords": [
     "laravel",
-    "nova"
+    "nova",
+    "zadarma",
+    "voip",
+    "phone"
   ],
   "license": "MIT",
+  "authors": [
+    {
+      "name": "Bartlomiej Gajda",
+      "email": "code@webard.me",
+      "role": "Developer"
+    }
+  ],
   "require": {
     "php": "^7.4|^8.0",
-    "illuminate/support": "*",
+    "illuminate/support": "^10.0|^11.0",
     "laravel/nova": "^4.20",
     "propaganistas/laravel-phone": "^5.0",
     "zadarma/user-api-v1": "^1.1"
