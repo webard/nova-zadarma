@@ -2,15 +2,15 @@
 
 namespace Webard\NovaZadarma\Http\Controllers\Webhooks;
 
-class IncomingCallEndController
+class OutgoingCallStartController
 {
     public function __invoke()
     {
         $validData = $validator->validated();
 
-        $className = config('nova-zadarma.webhooks.incoming_call_end');
+        $className = config('nova-zadarma.webhooks.outgoing_call_start');
 
-        $this->log->debug('[handleIncomingEnd] validated successfully, handling event', [
+        $this->log->debug('[handleOutgoingStart] validated successfully, handling event', [
             [
                 'valid_data' => $validData,
                 'handler' => $className,
@@ -23,12 +23,16 @@ class IncomingCallEndController
 
             return response($response === true ? 'ok' : 'error');
         } catch (\Throwable $e) {
-            $this->log->error('[handleIncomingEnd] Error while handling', [
+            $this->log->error('[handleOutgoingStart] Error while handling', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
 
             return response('exception');
         }
+
+        return response()->json([
+            'message' => 'Outgoing call started',
+        ]);
     }
 }

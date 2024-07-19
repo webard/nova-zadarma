@@ -38,7 +38,7 @@ class NovaZadarmaServiceProvider extends ServiceProvider
 
     public function provides()
     {
-        return ['zadarma'];
+        return [ZadarmaService::class];
     }
 
     /**

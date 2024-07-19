@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
+use Webard\NovaZadarma\Services\ZadarmaService;
 use Zadarma_API\ApiException;
 
 class NovaZadarmaTool extends Tool
@@ -41,7 +42,7 @@ class NovaZadarmaTool extends Tool
         }
 
         [$key, $login] = Cache::remember('zadarma_webrtc_key3_'.$userSip, 60, function () use ($userSip, $sipLogin) {
-            $zadarmaService = app('zadarma');
+            $zadarmaService = app(ZadarmaService::class);
 
             try {
                 $key = $zadarmaService->getWebrtcKey($userSip);

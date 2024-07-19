@@ -10,7 +10,7 @@ use Laravel\Nova\Nova;
 use Webard\NovaZadarma\Enums\PhoneCallDisposition;
 use Webard\NovaZadarma\Enums\PhoneCallType;
 use Webard\NovaZadarma\Enums\PhoneCallUserRole;
-use Webard\NovaZadarma\Events\OutgoingPhoneCall\OutgoingPhoneCallStarted;
+use Webard\NovaZadarma\Events\OutgoingPhoneCall\OutgoingPhoneCallCreated;
 use Webard\NovaZadarma\Models\PhoneCall;
 
 class MakePhoneCall extends Action
@@ -50,7 +50,7 @@ class MakePhoneCall extends Action
             $receiver->id => ['role' => PhoneCallUserRole::Receiver],
         ]);
 
-        event(new OutgoingPhoneCallStarted($phoneCall));
+        event(new OutgoingPhoneCallCreated($phoneCall));
 
         return ActionResponse::modal('InitZadarmaCall',
             [

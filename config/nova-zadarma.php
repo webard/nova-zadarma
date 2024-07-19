@@ -18,7 +18,7 @@ return [
         'sip_login' => env('ZADARMA_SIP_LOGIN'),
     ],
 
-    'webhook_controller' => \Webard\NovaZadarma\Http\Controllers\ZadarmaWebhookController::class,
+    'webhook_controller' => \Webard\NovaZadarma\Http\Controllers\ZadarmaWebhookForwardController::class,
 
     'phone_number_info_handler' => '',
 
