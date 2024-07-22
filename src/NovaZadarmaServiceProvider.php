@@ -94,7 +94,7 @@ class NovaZadarmaServiceProvider extends ServiceProvider
         if (version_compare($this->app->version(), '11.0.0', '>=')) {
             $this->publishesMigrations([
                 __DIR__.'/../database/migrations' => database_path('migrations'),
-            ]);
+            ], 'migrations');
         } else {
             $this->publishes([
                 __DIR__.'/../database/migrations' => database_path('migrations'),

@@ -4,6 +4,9 @@ namespace Webard\NovaZadarma\Http\Controllers\Webhooks;
 
 use Illuminate\Http\JsonResponse;
 use Webard\NovaZadarma\Enums\PhoneCallDisposition;
+use Webard\NovaZadarma\Events\OutgoingPhoneCall\OutgoingPhoneCallAnswered;
+use Webard\NovaZadarma\Events\OutgoingPhoneCall\OutgoingPhoneCallEnded;
+use Webard\NovaZadarma\Events\OutgoingPhoneCall\OutgoingPhoneCallFailed;
 use Webard\NovaZadarma\Http\Requests\OutgoingCallEndSignedRequest;
 use Webard\NovaZadarma\Models\PhoneCall;
 
@@ -27,6 +30,14 @@ class OutgoingCallEndController
             'disposition' => $disposition,
             'duration' => $duration,
         ]);
+
+        event(new OutgoingPhoneCallEnded($phoneCall));
+
+        if ($disposition === PhoneCallDisposition::Answered) {
+            event(new OutgoingPhoneCallAnswered($phoneCall));
+        } else {
+            event(new OutgoingPhoneCallFailed($phoneCall));
+        }
 
         return response()->json([
             'success' => true,

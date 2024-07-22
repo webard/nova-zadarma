@@ -2,9 +2,9 @@
 
 namespace Webard\NovaZadarma\Http\Controllers\Webhooks;
 
-use Illuminate\Support\Carbon;
 use Webard\NovaZadarma\Enums\PhoneCallDisposition;
 use Webard\NovaZadarma\Enums\PhoneCallType;
+use Webard\NovaZadarma\Events\IncomingPhoneCall\IncomingPhoneCallStarted;
 use Webard\NovaZadarma\Http\Requests\IncomingCallStartSignedRequest;
 use Webard\NovaZadarma\Models\PhoneCall;
 
@@ -14,15 +14,13 @@ class IncomingCallStartController
     {
         $data = $request->validated();
 
-        $startedAt = Carbon::parse($data['call_start'])->setTimezone(config('app.timezone'));
-
         $phoneCall = new PhoneCall([
             'type' => PhoneCallType::Incoming,
             'disposition' => PhoneCallDisposition::Pending,
             'pbx_call_id' => $data['pbx_call_id'],
             'caller_phone_number' => $data['caller_id'],
             'receiver_phone_number' => $data['called_did'],
-            'started_at' => $startedAt,
+            'started_at' => now(config('app.timezone')),
         ]);
 
         $userModel = config('nova-zadarma.models.user.class');
@@ -44,6 +42,8 @@ class IncomingCallStartController
         }
 
         $phoneCall->save();
+
+        event(new IncomingPhoneCallStarted($phoneCall));
 
         return response()->json([
             'success' => true,

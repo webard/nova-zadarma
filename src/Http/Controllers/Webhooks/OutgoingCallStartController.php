@@ -3,9 +3,9 @@
 namespace Webard\NovaZadarma\Http\Controllers\Webhooks;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Carbon;
 use Webard\NovaZadarma\Enums\PhoneCallDisposition;
 use Webard\NovaZadarma\Enums\PhoneCallType;
+use Webard\NovaZadarma\Events\OutgoingPhoneCall\OutgoingPhoneCallStarted;
 use Webard\NovaZadarma\Http\Requests\OutgoingCallStartSignedRequest;
 use Webard\NovaZadarma\Models\PhoneCall;
 
@@ -25,13 +25,12 @@ class OutgoingCallStartController
             ])
             ->firstOrFail();
 
-        $startedAt = Carbon::parse($data['call_start'])->setTimezone(config('app.timezone'));
-
         $phoneCall->update([
             'pbx_call_id' => $data['pbx_call_id'],
             'caller_phone_number' => $data['caller_id'],
-            'started_at' => $startedAt,
         ]);
+
+        event(new OutgoingPhoneCallStarted($phoneCall));
 
         return response()->json([
             'success' => true,

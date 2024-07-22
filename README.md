@@ -28,7 +28,7 @@ php artisan vendor:publish --provider="Webard\NovaZadarma\NovaZadarmaServiceProv
 
 ### Step 3: Provide API keys from Zadarma
 
-Add this lines to .env file:
+Add this lines to `.env` file and fill them:
 
 ```sh
 ZADARMA_KEY=

@@ -38,6 +38,7 @@ class MakePhoneCall extends Action
             'caller_sip' => $caller->zadarma_sip,
             'receiver_phone_number' => $receiver->phone_number,
             'disposition' => PhoneCallDisposition::Pending,
+            'started_at' => now(config('app.timezone')),
         ]);
 
         $phoneCall->caller()->associate($caller);

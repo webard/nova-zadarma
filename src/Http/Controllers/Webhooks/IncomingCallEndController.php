@@ -3,6 +3,9 @@
 namespace Webard\NovaZadarma\Http\Controllers\Webhooks;
 
 use Webard\NovaZadarma\Enums\PhoneCallDisposition;
+use Webard\NovaZadarma\Events\IncomingPhoneCall\IncomingPhoneCallAnswered;
+use Webard\NovaZadarma\Events\IncomingPhoneCall\IncomingPhoneCallEnded;
+use Webard\NovaZadarma\Events\IncomingPhoneCall\IncomingPhoneCallFailed;
 use Webard\NovaZadarma\Http\Requests\IncomingCallEndSignedRequest;
 use Webard\NovaZadarma\Models\PhoneCall;
 
@@ -41,6 +44,14 @@ class IncomingCallEndController
         }
 
         $phoneCall->save();
+
+        event(new IncomingPhoneCallEnded($phoneCall));
+
+        if ($disposition === PhoneCallDisposition::Answered) {
+            event(new IncomingPhoneCallAnswered($phoneCall));
+        } else {
+            event(new IncomingPhoneCallFailed($phoneCall));
+        }
 
         return response()->json([
             'success' => true,
