@@ -3,7 +3,7 @@
 namespace Webard\NovaZadarma\Http\Middleware;
 
 use Laravel\Nova\Nova;
-use Webard\NovaZadarma\NovaZadarma;
+use Webard\NovaZadarma\NovaZadarmaTool;
 
 class Authorize
 {
@@ -29,6 +29,6 @@ class Authorize
      */
     public function matchesTool($tool)
     {
-        return $tool instanceof NovaZadarma;
+        return $tool instanceof NovaZadarmaTool;
     }
 }

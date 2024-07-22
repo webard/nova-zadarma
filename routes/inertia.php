@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Tool Routes
@@ -12,5 +10,3 @@ use Illuminate\Support\Facades\Route;
 | by your tool's "Authorize" middleware by default. Now - go build!
 |
 */
-
-//Route::get('/{resource}/{resourceId}', [NovaProfileController::class, 'index'])->name('nova-profile');

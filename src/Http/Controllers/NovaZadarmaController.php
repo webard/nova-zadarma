@@ -6,24 +6,27 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Validation\ValidationException;
-use Webard\NovaZadarma\Contract\PhoneNumberInfoContract;
 
 class NovaZadarmaController extends Controller
 {
     public function getPhoneNumberInfo(Request $request)
     {
-        $className = config('nova-zadarma.phone_number_info_handler');
-
         $phoneNumber = $request->input('phoneNumber');
 
-        try {
-            $phoneNumberInfo = new $className($phoneNumber);
+        $userModel = config('nova-zadarma.models.user.class');
 
-            assert($phoneNumberInfo instanceof PhoneNumberInfoContract);
+        $userResource = config('nova-zadarma.nova_resources.user.class');
+
+        try {
+            $user = $userModel::query()
+                ->where(config('nova-zadarma.models.user.phone_number_field'), $phoneNumber)
+                ->firstOrFail();
+
+            $url = '/resources/'.$userResource::uriKey().'/'.$user->id;
 
             return response()->json([
-                'title' => $phoneNumberInfo->getTitle(),
-                'resource_url' => $phoneNumberInfo->getResourceUrl(),
+                'title' => $user->{config('nova-zadarma.models.user.name_field')},
+                'resource_url' => $url,
             ]);
         } catch (ModelNotFoundException) {
             return response()->json([

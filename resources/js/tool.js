@@ -1,6 +1,45 @@
 import PhoneCallHeaderIcon from "./components/PhoneCallHeaderIcon";
 import PhoneCallWidget from "./components/PhoneCallWidget";
 import { createApp, defineComponent } from "vue";
+import InitZadarmaCall from "./components/InitZadarmaCall";
+import loadScript from "./scriptLoader";
+
+
+Nova.booting((app) => {
+   const loadZadarma = () => {
+    loadScript(
+      "https://my.zadarma.com/webphoneWebRTCWidget/v8/js/loader-phone-lib.js?v=68",
+    ).then(() => {
+
+      loadScript("/nova-vendor/webard/nova-zadarma/zadarma-loader-phone-fn.js?v=68").then(() => {
+        setTimeout(() => {
+          zadarmaWidgetFn(
+            Nova.config("zadarma_key"),
+            Nova.config("zadarma_login"),
+            Nova.config("zadarma_widget").shape,
+            Nova.config("zadarma_widget").language,
+            true,
+            Nova.config("zadarma_widget").position,
+          );
+        }, 1000);
+      });
+    });
+  };
+
+  app.component("InitZadarmaCall", InitZadarmaCall);
+
+  const canCall = Nova.config('zadarma_can_call');
+
+  if (canCall == true || canCall == 'true') {
+    if ( Nova.config("zadarma_key") == null || Nova.config("zadarma_login") == null) {
+      Nova.error("Zadarma key or login is not set, probably SIP is not configured or API keys are not set. Please check your configuration.");
+      console.error("Zadarma key or login is not set, probably SIP is not configured or API keys are not set. Please check your configuration.");
+    } else {
+      loadZadarma();
+    }
+  }
+});
+
 
 Nova.booting((app) => {
   const mountPhoneCallHeaderIcon = () => {

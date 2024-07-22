@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Webard\NovaZadarma\Http\Controllers\ZadarmaWebhookController;
 
-Route::match(['GET', 'POST'], '/webhook/pbx-call', [config('nova-zadarma.webhook_controller'), 'pbxCallWebhook']);
-
-Route::match(['GET', 'POST'], '/webhook/event', [config('nova-zadarma.webhook_controller'), 'eventWebhook']);
+Route::match(['GET', 'POST'], '/', config('nova-zadarma.webhooks.controller', ZadarmaWebhookController::class));
