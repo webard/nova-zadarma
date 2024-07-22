@@ -59,7 +59,7 @@ return [
         'language' => 'en',
         'position' => [
             'left' => '20px',
-            'bottom' => '20px',
+            'bottom' => '50px',
         ],
     ],
 

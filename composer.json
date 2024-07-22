@@ -1,6 +1,6 @@
 {
   "name": "webard/nova-zadarma",
-  "description": "Zadarma VoIP integration to Laravel Nova. Make and receive phone calls directly from your admin panel.",
+  "description": "Zadarma VoIP integration to Laravel Nova. Make and receive phone calls directly from your Nova interface.",
   "keywords": [
     "laravel",
     "nova",

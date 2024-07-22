@@ -1,9 +1,12 @@
-# Laravel Nova Zadarma VOIP Integration
+# Laravel Nova Zadarma VoIP Integration
 
 ## Description
 
-This package provides integration between Laravel Nova and the Zadarma VOIP service. It allows you to make, receive and manage phone calls directly from your Nova interface!
+This package provides integration between Laravel Nova and the Zadarma VoIP service. It allows you to make, receive and manage phone calls directly from your Nova interface!
 
+![Zadarma SIP User](screenshots/screenshot_2.png)
+
+![Zadarma SIP Phone Call](screenshots/screenshot_3.png)
 
 ## Installation
 
@@ -35,13 +38,13 @@ ZADARMA_SIP_LOGIN=
 
 Zadarma Secret and Key you can find in Settings -> Integrations and API -> Keys and API:
 
-![Zadarma API Keys](screenshots/screenshot_1.png)
+![Zadarma API Keys](screenshots/zadarma_1.png)
 
 Zadarma SIP Login is the suffix of PBX number, which can be found under My PBX -> Extensions.
 
 Your SIP Login is behind the painted field.
 
-![Zadarma SIP Login](screenshots/screenshot_2.png)
+![Zadarma SIP Login](screenshots/zadarma_2.png)
 
 ### Step 3: Publish the migrations
 
@@ -122,7 +125,7 @@ class User extends Resource {
 
 Go to your User edit form and fill `Zadarma SIP` according to SIP number in Zadarma panel. Default created SIP number is 100:
 
-![Zadarma SIP User](screenshots/screenshot_3.png)
+![Zadarma SIP User](screenshots/screenshot_1.png)
 
 ## Webhooks
 
