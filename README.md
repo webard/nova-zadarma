@@ -185,7 +185,7 @@ and enable checkboxes:
 ![Zadarma Notifications Settings](screenshots/zadarma_4.png)
 
 
-### Step 3: Add webhook URL to VerifyCsrfToken exceptions
+### Step 3: Add webhook URL to ignore
 
 Go to `bootstrap/app.php` file and modify `withMiddleware` method:
 
@@ -197,6 +197,9 @@ return Application::configure(basePath: dirname(__DIR__))
             '/nova-vendor/webard/nova-zadarma/webhook',
         ]);
         
+    })
+    ->withExceptions(function (Exceptions $exceptions) {
+        //
     })
     ->create();
 ```
