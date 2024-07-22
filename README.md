@@ -172,7 +172,7 @@ Go to Settings -> Integrations and API -> Integrations in Zadarma Panel and enab
 Go to Notifications settings and enter webhook URL:
 
 ```
-https://YOUR-DOMAIN.com/nova-vendor/webard/nova-zadarma/webhook/pbx-call
+https://YOUR-DOMAIN.com/nova-vendor/webard/nova-zadarma/webhook
 ```
 
 and enable checkboxes:
