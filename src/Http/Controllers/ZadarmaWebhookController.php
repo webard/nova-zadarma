@@ -8,11 +8,6 @@ use Illuminate\Routing\ControllerDispatcher;
 use Illuminate\Routing\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Webard\NovaZadarma\Http\Controllers\Webhooks\IncomingCallEndController;
-use Webard\NovaZadarma\Http\Controllers\Webhooks\IncomingCallStartController;
-use Webard\NovaZadarma\Http\Controllers\Webhooks\OutgoingCallEndController;
-use Webard\NovaZadarma\Http\Controllers\Webhooks\OutgoingCallStartController;
-use Webard\NovaZadarma\Http\Controllers\Webhooks\RecordingController;
 use Webard\NovaZadarma\Http\Requests\WebhookRequest;
 
 class ZadarmaWebhookController
@@ -41,11 +36,11 @@ class ZadarmaWebhookController
     private function matchControllerToEvent(string $event)
     {
         return match ($event) {
-            'NOTIFY_OUT_START' => OutgoingCallStartController::class,
-            'NOTIFY_OUT_END' => OutgoingCallEndController::class,
-            'NOTIFY_START' => IncomingCallStartController::class,
-            'NOTIFY_END' => IncomingCallEndController::class,
-            'NOTIFY_RECORD' => RecordingController::class,
+            'NOTIFY_OUT_START' => config('nova-zadarma.webhooks.classes.outgoing_call_start'),
+            'NOTIFY_OUT_END' => config('nova-zadarma.webhooks.classes.outgoing_call_end'),
+            'NOTIFY_START' => config('nova-zadarma.webhooks.classes.incoming_call_start'),
+            'NOTIFY_END' => config('nova-zadarma.webhooks.classes.incoming_call_end'),
+            'NOTIFY_RECORD' => config('nova-zadarma.webhooks.classes.phone_call_recording'),
             default => throw new NotFoundHttpException('Unsupported event'),
         };
     }

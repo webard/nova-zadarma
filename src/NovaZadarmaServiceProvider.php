@@ -91,9 +91,15 @@ class NovaZadarmaServiceProvider extends ServiceProvider
             __DIR__.'/../config/nova-zadarma.php' => config_path('nova-zadarma.php'),
         ], 'config');
 
-        $this->publishesMigrations([
-            __DIR__.'/../database/migrations' => database_path('migrations'),
-        ]);
+        if (version_compare($this->app->version(), '11.0.0', '>=')) {
+            $this->publishesMigrations([
+                __DIR__.'/../database/migrations' => database_path('migrations'),
+            ]);
+        } else {
+            $this->publishes([
+                __DIR__.'/../database/migrations' => database_path('migrations'),
+            ], 'migrations');
+        }
 
     }
 }

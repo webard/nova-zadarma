@@ -226,7 +226,8 @@ __webpack_require__.r(__webpack_exports__);
       title: null,
       phone: null,
       resource_url: null,
-      phone_call_type: null
+      phone_call_type: null,
+      widget_position: Nova.config('zadarma_widget').position
     };
   },
   methods: {
@@ -594,43 +595,39 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 
 var _hoisted_1 = {
-  key: 0,
-  "class": "bg-gray-200 dark:bg-gray-700 py-2 px-4 fixed rounded-lg shadow",
-  style: {
-    "z-index": "102",
-    "right": "20px",
-    "bottom": "90px",
-    "width": "400px"
-  }
-};
-var _hoisted_2 = {
   "class": "flex gap-2 items-center"
 };
-var _hoisted_3 = {
+var _hoisted_2 = {
   "class": "flex-none"
 };
-var _hoisted_4 = {
+var _hoisted_3 = {
   key: 0,
   "class": "font-bold text-base"
 };
-var _hoisted_5 = {
+var _hoisted_4 = {
   "class": "flex-grow text-right"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_CallIcon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("CallIcon");
   var _component_DeclineIcon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("DeclineIcon");
-  return $data.displayWidget === true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  return $data.displayWidget === true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+    key: 0,
+    "class": "bg-gray-200 dark:bg-gray-700 py-2 px-4 fixed rounded-lg shadow",
+    style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)([{
+      "z-index": "102"
+    }, $data.widget_position])
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["dark:text-gray-400", {
       'cursor-pointer link-default': $data.resource_url != null
     }]),
     onClick: _cache[0] || (_cache[0] = function ($event) {
       return $options.visit($data.resource_url);
     })
-  }, [$data.title != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.title), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  }, [$data.title != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.title), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)({
       'text-lg': $data.title == null
     })
-  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.phone), 3 /* TEXT, CLASS */)], 2 /* CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [$data.phoneCallStarted === false ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.phone), 3 /* TEXT, CLASS */)], 2 /* CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [$data.phoneCallStarted === false ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
     key: 0,
     "class": "text-center",
     onClick: _cache[1] || (_cache[1] = function () {
@@ -641,7 +638,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[2] || (_cache[2] = function () {
       return $options.finishPhoneCall && $options.finishPhoneCall.apply($options, arguments);
     })
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DeclineIcon)])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_DeclineIcon)])])])], 4 /* STYLE */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
 }
 
 /***/ }),
@@ -49547,21 +49544,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 Nova.booting(function (app) {
-  console.log(Nova.config('lol'));
   var loadZadarma = function loadZadarma() {
     (0,_scriptLoader__WEBPACK_IMPORTED_MODULE_4__["default"])("https://my.zadarma.com/webphoneWebRTCWidget/v8/js/loader-phone-lib.js?v=68").then(function () {
       (0,_scriptLoader__WEBPACK_IMPORTED_MODULE_4__["default"])("/nova-vendor/webard/nova-zadarma/zadarma-loader-phone-fn.js?v=68").then(function () {
         setTimeout(function () {
-          zadarmaWidgetFn(Nova.config("zadarma_key"), Nova.config("zadarma_login"), "rounded" /*square|rounded*/, "en" /*ru, en, es, fr, de, pl, ua*/, true, {
-            right: "25px",
-            bottom: "90px",
-            getStatusMessage: function getStatusMessage(status) {
-              alert("status:" + status);
-            }
-          });
+          zadarmaWidgetFn(Nova.config("zadarma_key"), Nova.config("zadarma_login"), Nova.config("zadarma_widget").shape, Nova.config("zadarma_widget").language, true, Nova.config("zadarma_widget").position);
         }, 1000);
-
-        //window.zdrmWebPhone.zadarmaCallbackCancel(function() {alert('sdfds');})
       });
     });
   };

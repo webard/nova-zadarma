@@ -64,7 +64,6 @@ var zadarmaWidgetFn = function (hash, sip, shape /*square|circle*/, lang /*ru, e
         },
 
         getStatusMessage: function (msg, parameters) {
-            console.log('LOOOL',msg, parameters);
             if (msg == 'browserNotSupported') {
 
             } else if (msg == 'canceled' || msg == 'rejected' || msg == 'busy') {

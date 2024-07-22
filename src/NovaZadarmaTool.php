@@ -59,6 +59,7 @@ class NovaZadarmaTool extends Tool
             'zadarma_can_call' => $canCall,
             'zadarma_key' => $key,
             'zadarma_login' => $login,
+            'zadarma_widget' => config('nova-zadarma.widget'),
         ]);
 
         Nova::script('current-phone-call', __DIR__.'/../dist/js/tool.js');

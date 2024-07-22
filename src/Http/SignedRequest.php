@@ -37,7 +37,7 @@ abstract class SignedRequest extends FormRequest
 
     public function authorize(): bool
     {
-        if (config('nova-zadarma.webhook_verify_signature', true) === false) {
+        if (config('nova-zadarma.webhooks.verify_signature', true) === false) {
             return true;
         }
 

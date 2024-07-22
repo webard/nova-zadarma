@@ -6,10 +6,7 @@ import loadScript from "./scriptLoader";
 
 
 Nova.booting((app) => {
- 
-
-  console.log(Nova.config('lol'))
-  const loadZadarma = () => {
+   const loadZadarma = () => {
     loadScript(
       "https://my.zadarma.com/webphoneWebRTCWidget/v8/js/loader-phone-lib.js?v=68",
     ).then(() => {
@@ -19,20 +16,12 @@ Nova.booting((app) => {
           zadarmaWidgetFn(
             Nova.config("zadarma_key"),
             Nova.config("zadarma_login"),
-            "rounded" /*square|rounded*/,
-            "en" /*ru, en, es, fr, de, pl, ua*/,
+            Nova.config("zadarma_widget").shape,
+            Nova.config("zadarma_widget").language,
             true,
-            {
-              right: "25px",
-              bottom: "90px",
-              getStatusMessage: function (status) {
-                alert("status:" + status);
-              },
-            },
+            Nova.config("zadarma_widget").position,
           );
         }, 1000);
-
-        //window.zdrmWebPhone.zadarmaCallbackCancel(function() {alert('sdfds');})
       });
     });
   };

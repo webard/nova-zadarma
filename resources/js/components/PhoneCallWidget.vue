@@ -1,6 +1,7 @@
 <template>
   <div v-if="displayWidget === true" class="bg-gray-200 dark:bg-gray-700 py-2 px-4 fixed rounded-lg shadow"
-    style="z-index: 102; right: 20px; bottom: 90px; width: 400px">
+    style="z-index: 102;"
+    :style="widget_position">
     <div class="flex gap-2 items-center">
       <div class="flex-none">
         <a class="dark:text-gray-400" :class="{'cursor-pointer link-default': resource_url != null}" @click="visit(resource_url)">
@@ -38,6 +39,7 @@ export default {
       phone: null,
       resource_url: null,
       phone_call_type: null,
+      widget_position: Nova.config('zadarma_widget').position,
     };
   },
   methods: {
