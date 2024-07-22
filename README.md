@@ -113,10 +113,10 @@ class User extends Resource {
 ```
 
 > [!WARNING]
-> `MakePhoneCall` action must be `sole`, because User can call to only one user at time.
+> `MakePhoneCall` action must be `sole`, because User can make call to only one user at time.
 
-> [!INFO]
-> You can run `->withoutConfirmation()` on action to make phone call directly after clicking action.
+> [!TIP]
+> You can add `->withoutConfirmation()` method to action to allow making phone calls directly after clicking action.
 
 ### Step 8: Fill SIP Number in your User profile of Nova
 
