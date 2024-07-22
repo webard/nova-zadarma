@@ -46,7 +46,7 @@ Your SIP Login is behind the painted field.
 
 ![Zadarma SIP Login](screenshots/zadarma_2.png)
 
-### Step 3: Publish the migrations
+### Step 4: Publish the migrations
 
 Publish the package migrations using the following command:
 
@@ -54,7 +54,7 @@ Publish the package migrations using the following command:
 php artisan vendor:publish --provider="Webard\NovaZadarma\NovaZadarmaServiceProvider" --tag=migrations
 ```
 
-### Step 4: Register tool in `NovaServiceProvider`
+### Step 5: Register tool in `NovaServiceProvider`
 
 ```php
 use Webard\NovaZadarma\NovaZadarmaTool;
@@ -68,7 +68,7 @@ public function tools()
 }
 ```
 
-### Step 5: Update the User model
+### Step 6: Update the User model
 
 Add the `HasPhoneCalls` trait to the User model:
 
@@ -80,7 +80,7 @@ class User extends Authenticatable {
 }
 ```
 
-### Step 6: Add the phone calls field to the User resource
+### Step 7: Add the phone calls field to the User resource
 
 ```php
 use Webard\NovaZadarma\Nova\Fields\UserPhoneCalls;
@@ -96,7 +96,7 @@ class User extends Resource {
 }
 ```
 
-### Step 7: Add the phone call action to the User resource
+### Step 8: Add the phone call action to the User resource
 
 Add the `MakePhoneCall` action to the User resource:
 
@@ -121,7 +121,7 @@ class User extends Resource {
 > [!TIP]
 > You can add `->withoutConfirmation()` method to action to allow making phone calls directly after clicking action.
 
-### Step 8: Fill SIP Number in your User profile of Nova
+### Step 9: Fill SIP Number in your User profile of Nova
 
 Go to your User edit form and fill `Zadarma SIP` according to SIP number in Zadarma panel. Default created SIP number is 100:
 
@@ -129,43 +129,66 @@ Go to your User edit form and fill `Zadarma SIP` according to SIP number in Zada
 
 ## Webhooks
 
-In Zadarma Integrations Notifications set PBX call webhook url to:
+### Step 1: Enable "Notifications" in integrations 
+
+Go to Settings -> Integrations and API -> Integrations in Zadarma Panel and enable "Notifications" integration.
+
+![Zadarma Integrations](screenshots/zadarma_3.png)
+
+### Step 2: Fill settings of "Notifications" integration
+
+Go to Notifications settings and enter webhook URL:
 
 ```
 https://YOUR-DOMAIN.com/nova-vendor/webard/nova-zadarma/webhook/pbx-call
 ```
 
-and enable all checkboxes.
+and enable checkboxes:
+- NOTIFY_START
+- NOTIFY_END
+- NOTIFY_OUT_START
+- NOTIFY_OUT_END
+- NOTIFY_RECORD
 
-Set events webhook url to:
+![Zadarma Notifications Settings](screenshots/zadarma_4.png)
 
+
+### Step 3: Add webhook URL to VerifyCsrfToken exceptions
+
+Go to `bootstrap/app.php` file and modify `withMiddleware` method:
+
+```php
+return Application::configure(basePath: dirname(__DIR__))
+    ->withMiddleware(function (Middleware $middleware) {
+
+        $middleware->validateCsrfTokens(except: [
+            '/nova-vendor/webard/nova-zadarma/webhook',
+        ]);
+        
+    })
+    ->create();
 ```
-https://YOUR-DOMAIN.com/nova-vendor/webard/nova-zadarma/webhook/event
+
+If you have `fruitcake/laravel-telescope-toolbar` installed, add webhook URL to `ignore_paths` in `config/telescope-toolbar.php`
+
+
+```php
+'ignore-paths' => [
+    'nova-vendor/webard/nova-zadarma/webhook'
+]
 ```
-
-and enable all checkboxes.
-
-Add entry to `$except` property in `App\Http\Middleware\VerifyCsrfToken` class:
-
-```
-'nova-api/webard/nova-zadarma/webhook/*'
-```
-
-If you have `fruitcake/laravel-telescope-toolbar` installed, add this entry too:
-
-```
-'nova-api/webard/nova-zadarma/webhook/*'
-```
-
-to `ignore_paths` in `config/telescope-toolbar.php`
-
 
 ## TODO
 
 I'm are actively seeking contributions to enhance this package. Here are some features I would love to see implemented:
 
-- [ ] multi-language
-
+- [ ] documentation for Gate
+- [ ] documentation for Events
+- [ ] ability to go offline (disable widget on demand)
+- [ ] more options for icon in header
+- [ ] after call action modal with customized fields (feedback modal)
+- [ ] phone call transcriptions using OpenAI/Google Speech To Text/Assembly.ai
+ 
 ## Contributing
 
 We welcome contributions to improve this plugin! Please follow these steps to contribute:
