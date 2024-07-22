@@ -70,17 +70,40 @@ public function tools()
 
 ### Step 6: Update the User model
 
-Add the `HasPhoneCalls` trait to the User model:
+1. Add the `HasPhoneCalls` trait to the User model
+2. Add `zadarma_sip` and `phone_number` to `$fillable` property
+3. Cast `phone_number` field to ` E164PhoneNumberCast::class`.
+
 
 ```php
+use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use Webard\NovaZadarma\Traits\HasPhoneCalls;
 
 class User extends Authenticatable {
     use HasPhoneCalls;
+
+    protected $fillable = [
+        ...
+        'zadarma_sip',
+        'phone_number'
+    ];
+
+     protected function casts(): array
+    {
+        return [
+            ...
+            'phone_number' => E164PhoneNumberCast::class,
+        ];
+    }
 }
 ```
 
-### Step 7: Add the phone calls field to the User resource
+### Step 7: Modify User resource
+
+1. Add `Zadarma SIP` field
+2. Add `Phone Number` field
+3. Add `UserPhoneCalls` field
+
 
 ```php
 use Webard\NovaZadarma\Nova\Fields\UserPhoneCalls;
@@ -90,6 +113,15 @@ class User extends Resource {
     {
         return [
             ...
+            Text::make(__('Zadarma SIP'), 'zadarma_sip')
+                ->sortable()
+                ->nullable()
+                ->rules('nullable', 'max:4'),
+
+            Text::make(__('Phone Number'), 'phone_number')
+                ->sortable()
+                ->rules('nullable', 'max:20', 'phone'),
+
             UserPhoneCalls::make(),
         ];
     }
