@@ -46,9 +46,80 @@ class ZadarmaWebhookController extends Controller
      */
     public function eventWebhook(Request $request): Response
     {
-        $this->log->debug('eventWebhook input', $request->all());
 
-        return response('not implemented');
+
+        $result = $request->input('result');
+
+        $resultDecoded = json_decode($result, true);
+
+        if ($resultDecoded !== null) {
+            $request->merge($resultDecoded);
+        }
+
+        // for some reason, caller_id or called_did sometimes does not have "+" at the beginning
+        // trying to fix this to make it work with validator
+        $callerDid = $request->input('caller_did');
+        if ($callerDid !== null && str_contains($callerDid, '+') === false) {
+            $request->merge(['caller_did' => '+' . $callerDid]);
+        }
+
+        $callerId = $request->input('caller_id');
+        if ($callerId !== null && str_contains($callerId, '+') === false) {
+            $request->merge(['caller_id' => '+' . $callerId]);
+        }
+
+        return match ((string) $request->input('event')) {
+            'SMS' => $this->handleIncomingSms($request),
+            default => response('unknown'),
+        };
+    }
+
+    private function handleIncomingSms(Request $request): Response
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'caller_id' => 'phone',
+                'caller_did' => 'phone',
+                'text' => 'required',
+            ],
+        );
+
+        if ($validator->fails()) {
+            $this->log->error('[handleIncomingSms] validation failed', [
+                'errors' => $validator->errors(),
+                'input' => $request->all(),
+            ]);
+
+            return response('validation');
+        }
+
+        $validData = $validator->validated();
+
+        $className = config('nova-zadarma.webhooks.incoming_sms');
+
+        $this->log->debug('[handleIncomingSms] validated successfully, handling event', [
+            [
+                'valid_data' => $validData,
+                'handler' => $className,
+            ],
+        ]);
+
+        try {
+            $class = new $className($this->log);
+            $response = $class($validData, $request);
+
+            return response($response === true ? 'ok' : 'error');
+        } catch (\Throwable $e) {
+            $this->log->error('[handleIncomingSms] Error while handling', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            dump($e->getMessage());
+
+            return response('exception');
+        }
     }
 
     /**
@@ -60,15 +131,15 @@ class ZadarmaWebhookController extends Controller
         // trying to fix this to make it work with validator
         $calledDid = $request->input('called_did');
         if ($calledDid !== null && str_contains($calledDid, '+') === false) {
-            $request->merge(['called_did' => '+'.$calledDid]);
+            $request->merge(['called_did' => '+' . $calledDid]);
         }
 
         $callerId = $request->input('caller_id');
         if ($callerId !== null && str_contains($callerId, '+') === false) {
-            $request->merge(['caller_id' => '+'.$callerId]);
+            $request->merge(['caller_id' => '+' . $callerId]);
         }
 
-        $this->log->debug('[pbx] webhook came with event '.$request->input('event'), $request->all());
+        $this->log->debug('[pbx] webhook came with event ' . $request->input('event'), $request->all());
 
         return match ((string) $request->input('event')) {
             'NOTIFY_RECORD' => $this->handleRecord($request),
